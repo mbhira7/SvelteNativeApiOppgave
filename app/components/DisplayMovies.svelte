@@ -1,0 +1,94 @@
+<script>
+    export let array
+    export let heading
+    import {showModal} from "svelte-native"
+    import Movie from "../modals/Movie.svelte"
+    export let getData
+    export let genresList
+    let test = []
+    const apiKey="cffa047e4f2e83b565d15715e66d2a35"
+
+    const viewMovie = async (movie) => {
+        const details = `https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${apiKey}`
+        
+         await getData(details)
+            .then(res => test = res.cast)
+
+        await showModal({
+            page: Movie,
+            fullscreen:true,
+            props:{
+                movie:movie,
+                test:test,
+                genresList:genresList
+            }
+        })
+    }
+</script>
+
+
+    <stackLayout >
+        <flexBoxLayout class= "search" style="background-color: #101822;
+        width:100%;
+        height: 100%;">
+        <label text="{heading}" class="font-weight-bold wite"/>
+            <scrollView orientation="horizontal">
+                <flexBoxLayout class="movies" >   
+                    {#each array as movie}
+                        <gridLayout on:tap={() => viewMovie(movie)} class="movie" rows="130,auto" columns="105" >
+                            <image  col="0" row="0"  src={"https://image.tmdb.org/t/p/w185"+ movie.poster_path} class="img-rounded" />
+                            <flexBoxLayout col="1" class="rating-box text-center"  verticalAlignment="top" horizontalAlignment="right">
+                                <label  class="text-center" style="color:white; font-size:14;" text="{movie.vote_average}" />
+                            </flexBoxLayout>
+                            <label row="1"  style="color:white; padding:10; font-size:14;" text="{movie.title}" />
+                        </gridLayout>
+                    {:else}
+                        <activityIndicator busy={true} />
+                    {/each}       
+                </flexBoxLayout>
+            </scrollView>
+        </flexBoxLayout>
+    </stackLayout>
+
+
+
+
+<style>
+
+
+   .movies{
+       justify-content: flex-start;
+       align-items: flex-start;
+       margin-left:-6;
+   }
+
+   .movie{
+       justify-content: center;
+       align-items: center;
+      
+   }
+
+   .wite{
+        margin-top:5; 
+        margin-bottom:12;
+        color:rgb(255, 255, 255);
+        font-size:17;
+   }
+
+
+   .search{
+        flex-direction: column;
+        align-items: flex-start;
+   }
+
+   .rating-box{
+        margin-right:9;
+        justify-content: center;
+        align-items:center;
+        height:25;
+        width:30;
+        background-color: rgba(0,0,0,0.36);
+        border-radius:4;
+   }
+
+</style>
