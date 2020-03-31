@@ -11,18 +11,23 @@
     {"id":10749,"name":"Romance"},{"id":878,"name":"Science Fiction"},{"id":10770,"name":"TV Movie"},
     {"id":53,"name":"Thriller"},{"id":10752,"name":"War"},{"id":37,"name":"Western"}]
 
+
+    for(let i=0; i<genresList.length; i++) {
+        genresList[i].clicked = false
+    }
+
     const getData = (url) => {
         return new Promise(resolve => {
             fetch(url)
             .then(response => response.json())
             .then(response => {
-                    return resolve(response)
-                    console.log()
-                
+                return resolve(response)
             })
     })
 
 }
+ 
+
 
 </script>
 
@@ -32,17 +37,17 @@
         <tabStrip backgroundColor="#1a222d" height="58" class="tabstrip-label">
             <tabStripItem >
                 <image src="font://&#xf008;" class="fas" />
-                <label text="Discover"/>
+                <label class="white" text="Discover"/>
                 
             </tabStripItem >
 
             <tabStripItem >
-                <label text="Search" />
+                <label class="white" text="Search" />
                 <image src="font://&#xf002;" class="fas" />
             </tabStripItem>
 
             <tabStripItem >
-                <label text="Watchlist"/>
+                <label class="white" text="Watchlist"/>
                 <image src="font://&#xf02e;" class="far" />
             </tabStripItem>
 
@@ -82,11 +87,17 @@
    .fas{
         font-family: "Font Awesome 5 Free", "fa-solid-900";
         font-weight: 900;
+        color:white;
    }
 
-   .fas-03 {
+   .far {
     font-family: "Font Awesome 5 Free", "fa-regular-400";
     font-weight: 400;
-}
+    color:white;
+   }
+
+    .white{
+        color:white;
+    }
 
 </style>

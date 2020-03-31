@@ -31,20 +31,24 @@
         <flexBoxLayout class= "search" style="background-color: #101822;
         width:100%;
         height: 100%;">
-        <label text="{heading}" class="font-weight-bold wite"/>
+        {#if array.length >= 1}
+            <label text="{heading}" class="font-weight-bold wite"/>
+        {/if}
             <scrollView orientation="horizontal">
-                <flexBoxLayout class="movies" >   
-                    {#each array as movie}
-                        <gridLayout on:tap={() => viewMovie(movie)} class="movie" rows="130,auto" columns="105" >
-                            <image  col="0" row="0"  src={"https://image.tmdb.org/t/p/w185"+ movie.poster_path} class="img-rounded" />
-                            <flexBoxLayout col="1" class="rating-box text-center"  verticalAlignment="top" horizontalAlignment="right">
-                                <label  class="text-center" style="color:white; font-size:14;" text="{movie.vote_average}" />
-                            </flexBoxLayout>
-                            <label row="1"  style="color:white; padding:10; font-size:14;" text="{movie.title}" />
-                        </gridLayout>
-                    {:else}
-                        <activityIndicator busy={true} />
-                    {/each}       
+                <flexBoxLayout class="movies" >
+                    {#if array.length >= 1}   
+                        {#each array as movie}
+                            <gridLayout on:tap={() => viewMovie(movie)} class="movie" rows="130,auto" columns="105" >
+                                <image  col="0" row="0"  src={"https://image.tmdb.org/t/p/w185"+ movie.poster_path} class="img-rounded" />
+                                <flexBoxLayout col="1" class="rating-box text-center"  verticalAlignment="top" horizontalAlignment="right">
+                                    <label  class="text-center" style="color:white; font-size:14;" text="{movie.vote_average}" />
+                                </flexBoxLayout>
+                                <label row="1"  style="color:white; padding:10; font-size:14;" text="{movie.title}" />
+                            </gridLayout>
+                        {:else}
+                            <activityIndicator busy={true} />
+                        {/each}       
+                    {/if}
                 </flexBoxLayout>
             </scrollView>
         </flexBoxLayout>

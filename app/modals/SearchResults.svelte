@@ -29,3 +29,19 @@
             </flexBoxLayout>
             </scrollView>
         </flexBoxLayout>
+
+
+<script>
+
+let indeks = chosenGenres.findIndex(g => g === id)
+        
+        genresList[i].clicked = !clicked
+        if(genresList[i].clicked === true && !chosenGenres.includes(genresList[i].id)) {
+            chosenGenres = [...chosenGenres, genresList[i].id].slice(0,3)
+        }
+       else {
+            chosenGenres.splice(indeks,1)
+        }
+        getData(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&&with_genres=${chosenGenres}`)
+            .then(res => genres = res.results)
+</script>

@@ -1,6 +1,6 @@
 {
   "nativescript": {
-    "id": "technology.sveltenative.template",
+    "id": "sveltenative.apioppgave",
     "tns-ios": {
       "version": "6.4.2"
     },
@@ -20,6 +20,7 @@
   "repository": "https://github.com/halfnelson/svelte-native-template",
   "dependencies": {
     "nativescript-fontawesome": "^1.0.0",
+    "nativescript-plugin-firebase": "^10.5.0",
     "nativescript-theme-core": "~2.0.24",
     "svelte-native": "~0.8.0",
     "tns-core-modules": "~6.4.2"

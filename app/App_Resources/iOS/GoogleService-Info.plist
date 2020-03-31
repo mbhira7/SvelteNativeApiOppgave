@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>842765833967-458r9lu899p7phe1pab273fo64raic96.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.842765833967-458r9lu899p7phe1pab273fo64raic96</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAjK56BY8EkJ4ynOUX_Aekm4U-_iJo85nk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>842765833967</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>sveltenative.apioppgave</string>
+	<key>PROJECT_ID</key>
+	<string>svelte-api-oppgave</string>
+	<key>STORAGE_BUCKET</key>
+	<string>svelte-api-oppgave.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:842765833967:ios:558836625d19299c75ad1a</string>
+	<key>DATABASE_URL</key>
+	<string>https://svelte-api-oppgave.firebaseio.com</string>
+</dict>
+</plist>

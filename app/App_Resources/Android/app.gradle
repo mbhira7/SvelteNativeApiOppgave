@@ -12,7 +12,9 @@
 android {
   defaultConfig {
     minSdkVersion 17
+    multiDexEnabled true
     generatedDensities = []
+    applicationId = "sveltenative.apioppgave"
   }
   aaptOptions {
     additionalParameters "--no-version-vectors"

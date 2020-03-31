@@ -2,25 +2,37 @@
     import {onMount} from "svelte"
     import DisplayMovies from "./DisplayMovies.svelte"
     export let apiKey
-    export let getData
+    //export let getData
+    import {getData} from "../constants/constant.js"
     export let genresList
     let results = []
     let genres = []
     let searchValue = ""
     let showGenres = false;
     let prom 
+    let chosenGenres = []
 
-   const search = async () => {
-       if(searchValue.length > 1) {
-        console.log(searchValue)
-        prom = await getData(`https://api.themoviedb.org/3/search/movie?query=${searchValue}&api_key=${apiKey}`)
-        console.log(prom.results[0].title)
-            //results = res.results
+   const titleSearch = async () => {
+       if(searchValue.length >= 1) {
+            prom = await getData(`https://api.themoviedb.org/3/search/movie?query=${encodeURI(searchValue)}&api_key=${apiKey}`)
+            results = prom.results
+       }
+       else{
+           results = ""
        }
     }
 
-    const testFunksjon = (id) => {
-        getData(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&&with_genres=${id}`)
+    const genreSearch = (clicked,id, i) => {
+        let indeks = chosenGenres.findIndex(g => g === id)
+        
+        genresList[i].clicked = !clicked
+        if(genresList[i].clicked === true && !chosenGenres.includes(genresList[i].id)) {
+            chosenGenres = [...chosenGenres, genresList[i].id].slice(0,3)
+        }
+       else {
+            chosenGenres.splice(indeks,1)
+        }
+        getData(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&&with_genres=${chosenGenres}`)
             .then(res => genres = res.results)
     }
 
@@ -29,13 +41,15 @@
 <page>
     <stackLayout style="background-color: #101822; width:100%; height: 100%; padding:16;">
         <flexBoxLayout class="searchbar center">
-            <flexBoxLayout verticalAlignment="center" style="height:70;">
-                <label class="h2 " text="Search" style="color:white; margin-bottom:16; margin-right:15;"/>
-                <image on:tap={() => showGenres = !showGenres} src="~/assets/images/filter.png"  style="height:10; width:22; margin-top:-12" />
+            <flexBoxLayout verticalAlignment="top" >
+                <label class="h2 " text="Search" style="color:white;  margin-right:15;"/>
+                <flexBoxLayout style="height:70; width:22;" >
+                    <image on:tap={() => showGenres = !showGenres} src="~/assets/images/filter.png"  style="height:100%; width:100%; " />
+                </flexBoxLayout>
             </flexBoxLayout>
 
                 {#if !showGenres}
-                    <searchBar  on:textChange={search} style=" height:45; width:100%; margin-bottom:20;" hint="Search for movies" bind:text={searchValue}/>
+                    <searchBar  on:textChange={titleSearch} style=" height:45; width:100%; margin-bottom:18;" hint="Search for movies" bind:text={searchValue}/>
                 {/if}
             </flexBoxLayout>
             
@@ -43,19 +57,27 @@
         {#if showGenres}
             <scrollView orientation="horizontal">
             <flexBoxLayout >
-            {#each genresList as genre}
-                <flexBoxLayout class="genre-div">
-                    <label on:tap={() => testFunksjon(genre.id)} style="color:white; font-size:13; font-weight:bold;" text={genre.name}/>
-                </flexBoxLayout>
+            {#each genresList as genre, index}
+                 {#if chosenGenres.includes(genre.id)}
+                    <flexBoxLayout style="background-color:black" class="genre-div">
+                        <label on:tap={() => genreSearch(genre.clicked,genre.id,index)} style="color:white; font-size:13; font-weight:bold;" text={genre.name}/>
+                    </flexBoxLayout>
+                {:else}
+                    <flexBoxLayout style="background-color: rgba(156, 156, 156, 0.3)" class="genre-div">
+                        <label on:tap={() => genreSearch(genre.clicked,genre.id,index)} style="color:white; font-size:13; font-weight:bold;" text={genre.name}/>
+                    </flexBoxLayout>
+                {/if}
             {/each}
             </flexBoxLayout>
             </scrollView>
          {/if}
+         <scrollView>
          {#if showGenres}
-            <DisplayMovies array={genres} getData={getData} genresList={genresList}/> 
+            <DisplayMovies heading="Search results" array={genres} getData={getData} genresList={genresList}/> 
         {:else}
-            <DisplayMovies array={results} getData={getData} genresList={genresList}/> 
+            <DisplayMovies heading="Search results" array={results} getData={getData} genresList={genresList}/> 
         {/if}
+        </scrollView>
     </stackLayout>
 </page>
 
@@ -74,7 +96,6 @@
     }
 
     .genre-div{
-        background-color: rgba(156, 156, 156, 0.3);
         width:auto;
         height:auto;
         margin-bottom:20;

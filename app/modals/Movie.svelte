@@ -1,19 +1,25 @@
 <script>
+    import { alert } from '@nativescript/core/ui/dialogs'
     import {closeModal} from "svelte-native"
     export let movie
     export let test
     export let genresList
     let genreNames = []
+    let showEmpty = true
 
 
- movie.genre_ids.forEach(
-    movieId => {
-        const indeks = genresList.findIndex(genre => genre.id === movieId)
-        genreNames = [...genreNames, genresList[indeks].name]
-                
-    }
-)
 
+    movie.genre_ids.forEach(
+        movieId => {
+            const indeks = genresList.findIndex(genre => genre.id === movieId)
+            genreNames = [...genreNames, genresList[indeks].name]
+                    
+        }
+    )
+
+    const add = () => {
+        showEmpty = !showEmpty
+	}
 
 </script>
 
@@ -40,8 +46,12 @@
             {#each genreNames.slice(0,3) as genreName}
                 <label text="{genreName} | " class="tekst m-y-2" style="font-size:16;"/>
             {/each}
-            <flexBoxLayout style="height:9; width:19;">
-                <image src="font://&#xf02e;"  style="height:100%; width:100%;"class="far" stretch="aspectFill" />
+            <flexBoxLayout style="height:8; width:20;">
+                {#if showEmpty}
+                    <image on:tap={add} src="font://&#xf02e;"  style="height:100%; width:100%;"class="far" stretch="aspectFill" />
+                {:else}
+                    <image on:tap={add} src="font://&#xf02e;"  style="height:100%; width:100%;"class="fas" stretch="aspectFill" />
+                {/if}
             </flexBoxLayout>
             </flexBoxLayout>
             <label class="tekst m-y-4" style="font-size:16;" text="{movie.release_date.slice(0, 4)}" />
@@ -80,6 +90,12 @@
     }
 
     .far{
+        color:white;
+        margin-top:6;
+        margin-left:4;
+    }
+
+    .fas{
         color:white;
         margin-top:6;
         margin-left:4;
