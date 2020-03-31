@@ -22,16 +22,18 @@
        }
     }
 
-    const genreSearch = (clicked,id, i) => {
-        let indeks = chosenGenres.findIndex(g => g === id)
+    const genreSearch = (clicked, id, i) => {
+       let indeks = chosenGenres.findIndex(g => g === id)
         
         genresList[i].clicked = !clicked
         if(genresList[i].clicked === true && !chosenGenres.includes(genresList[i].id)) {
             chosenGenres = [...chosenGenres, genresList[i].id].slice(0,3)
         }
-       else {
+        if(genresList[i].clicked === false && chosenGenres.includes(genresList[i].id)) {
             chosenGenres.splice(indeks,1)
         }
+
+        console.log(chosenGenres, clicked)
         getData(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&&with_genres=${chosenGenres}`)
             .then(res => genres = res.results)
     }
@@ -41,7 +43,7 @@
 <page>
     <stackLayout style="background-color: #101822; width:100%; height: 100%; padding:16;">
         <flexBoxLayout class="searchbar center">
-            <flexBoxLayout verticalAlignment="top" >
+            <flexBoxLayout verticalAlignment="top" horizontalAlignment="right" >
                 <label class="h2 " text="Search" style="color:white;  margin-right:15;"/>
                 <flexBoxLayout style="height:70; width:22;" >
                     <image on:tap={() => showGenres = !showGenres} src="~/assets/images/filter.png"  style="height:100%; width:100%; " />
@@ -60,11 +62,11 @@
             {#each genresList as genre, index}
                  {#if chosenGenres.includes(genre.id)}
                     <flexBoxLayout style="background-color:black" class="genre-div">
-                        <label on:tap={() => genreSearch(genre.clicked,genre.id,index)} style="color:white; font-size:13; font-weight:bold;" text={genre.name}/>
+                        <label on:tap={() => genreSearch(genre.clicked, genre.id,index)} style="color:white; font-size:13; font-weight:bold;" text={genre.name}/>
                     </flexBoxLayout>
                 {:else}
                     <flexBoxLayout style="background-color: rgba(156, 156, 156, 0.3)" class="genre-div">
-                        <label on:tap={() => genreSearch(genre.clicked,genre.id,index)} style="color:white; font-size:13; font-weight:bold;" text={genre.name}/>
+                        <label on:tap={() => genreSearch(genre.clicked, genre.id,index)} style="color:white; font-size:13; font-weight:bold;" text={genre.name}/>
                     </flexBoxLayout>
                 {/if}
             {/each}

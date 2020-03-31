@@ -1,12 +1,13 @@
 <script>
     import { alert } from '@nativescript/core/ui/dialogs'
     import {closeModal} from "svelte-native"
+    import { db } from '../stores/stores.js'
+    import { onMount } from 'svelte'
     export let movie
     export let test
     export let genresList
     let genreNames = []
     let showEmpty = true
-
 
 
     movie.genre_ids.forEach(
@@ -44,7 +45,7 @@
             </gridLayout>
             <flexBoxLayout>
             {#each genreNames.slice(0,3) as genreName}
-                <label text="{genreName} | " class="tekst m-y-2" style="font-size:16;"/>
+                <label textWrap="true" text="{genreName} | " class="tekst m-y-2" style="font-size:16;"/>
             {/each}
             <flexBoxLayout style="height:8; width:20;">
                 {#if showEmpty}
@@ -91,13 +92,13 @@
 
     .far{
         color:white;
-        margin-top:6;
+        margin-top:8;
         margin-left:4;
     }
 
     .fas{
         color:white;
-        margin-top:6;
+        margin-top:9;
         margin-left:4;
     }
 </style>
