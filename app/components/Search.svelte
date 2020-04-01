@@ -2,7 +2,6 @@
     import {onMount} from "svelte"
     import DisplayMovies from "./DisplayMovies.svelte"
     export let apiKey
-    //export let getData
     import {getData} from "../constants/constant.js"
     export let genresList
     let results = []
@@ -23,7 +22,7 @@
     }
 
     const genreSearch = (clicked, id, i) => {
-       let indeks = chosenGenres.findIndex(g => g === id)
+       const indeks = chosenGenres.findIndex(g => g === id)
         
         genresList[i].clicked = !clicked
         if(genresList[i].clicked === true && !chosenGenres.includes(genresList[i].id)) {
@@ -32,10 +31,11 @@
         if(genresList[i].clicked === false && chosenGenres.includes(genresList[i].id)) {
             chosenGenres.splice(indeks,1)
         }
-
+       
         console.log(chosenGenres, clicked)
         getData(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&&with_genres=${chosenGenres}`)
             .then(res => genres = res.results)
+    
     }
 
 </script>

@@ -1,11 +1,12 @@
 <script>
     import Homepage from "./components/Homepage.svelte"
     import Search from "./components/Search.svelte"
+    import Watchlist from "./components/Watchlist.svelte"
     import { db } from './stores/stores.js'
     import { onMount } from 'svelte'
     const apiKey = "cffa047e4f2e83b565d15715e66d2a35"
     let selectedTab = 0
-    let books = []
+    let favourites = []
     const genresList= [{"id":28,"name":"Action"},
     {"id":12,"name":"Adventure"},{"id":16,"name":"Animation"},{"id":35,"name":"Comedy"},
     {"id":80,"name":"Crime"},{"id":99,"name":"Documentary"},{"id":18,"name":"Drama"},
@@ -49,20 +50,16 @@ const initFirebase = () => {
 }
 
 onMount( async () => {
-        console.log('App mounts..')
-        $db = await initFirebase()
-        const testDatabase = $db.collection("test")
-
-        testDatabase.doc("test3").set({
-            title: "Test",
-            status: "updated"
-        });
-    
+    console.log('App mounts..')
+    $db = await initFirebase()
+    const movies = $db.collection("movies")
+    const showFavourites = movies.onSnapshot(snapshot => {
+            favourites=[]
+            snapshot.forEach( favourite => {
+                    favourites = favourite.data()
+            })
+        })
     })
-
-
- 
-
 
 </script>
 
@@ -93,11 +90,11 @@ onMount( async () => {
         </tabContentItem>
         
         <tabContentItem>
-            <Search getData={getData} apiKey={apiKey} genresList={genresList}/>
+            <Search getData={getData} apiKey={apiKey}  genresList={genresList}/>
         </tabContentItem>
 
         <tabContentItem>
-            <label text="test" />
+            <Watchlist genresList={genresList} favourites={favourites}/>
         </tabContentItem>
     </tabs>
     </stackLayout>

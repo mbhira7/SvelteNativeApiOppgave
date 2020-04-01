@@ -4,6 +4,7 @@
     export let apiKey
     export let getData 
     export let genresList 
+    export let addToDatabase 
     const trendingMoviesUrl = `https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=${apiKey}`
     const newMoviesUrl = `https://api.themoviedb.org/3/discover/movie?primary_release_year=2020&api_key=${apiKey}`
 
@@ -29,8 +30,8 @@ onMount(() => {
         </flexBoxLayout>
         <scrollView >
             <stackLayout style="padding:14;">
-                <DisplayMovies heading="New releases" genresList={genresList} array={newMovies} getData={getData}/>
-                <DisplayMovies heading="Trending movies" genresList={genresList} array={trendingMovies} getData={getData}/>
+                <DisplayMovies heading="New releases" genresList={genresList} array={newMovies} getData={getData} />
+                <DisplayMovies heading="Trending movies" genresList={genresList} array={trendingMovies} getData={getData} />
             </stackLayout>
         </scrollView>
     </stackLayout>  
