@@ -7,6 +7,7 @@
     export let genresList
     let test = []
     const apiKey="cffa047e4f2e83b565d15715e66d2a35"
+    import { db } from '../stores/stores.js'
 
     const viewMovie = async (movie) => {
         const details = `https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${apiKey}`

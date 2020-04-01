@@ -2,12 +2,19 @@
     import { alert } from '@nativescript/core/ui/dialogs'
     import {closeModal} from "svelte-native"
     import { db } from '../stores/stores.js'
-    import { onMount } from 'svelte'
     export let movie
     export let test
     export let genresList
     let genreNames = []
     let showEmpty = true
+
+
+     const testDatabase = $db.collection("test")
+
+        testDatabase.doc(`${movie.id}`).set({
+            title: "Test",
+            status: "updated"
+        });
 
 
     movie.genre_ids.forEach(
@@ -36,7 +43,7 @@
         </actionBar>
     <scrollView>
         <flexBoxLayout class="m-y-60" style="flex-direction:column; margin:0 50 0 50;">
-            <image src={"https://image.tmdb.org/t/p/w185"+ movie.poster_path} class="test img-rounded " style="margin-top:18;" stretch="aspectFill"/>
+                <image src={"https://image.tmdb.org/t/p/w185"+ movie.poster_path} class="test img-rounded " style="margin-top:18; " stretch="aspectFill"/>
             <gridLayout  row="1" columns="180,*" style="margin-top:8;">
                 <label textAlignment="left" textWrap="true" row="1" col="0" class="font-weight-bold m-y-4 tekst" style="font-size:18; " text="{movie.title}" />
                 <gridLayout col="1" verticalAlignment="top" textAlignment="right">
