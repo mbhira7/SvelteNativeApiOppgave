@@ -26,7 +26,7 @@
             .then(response => response.json())
             .then(response => {
                 return resolve(response)
-            })
+        })
     })
 
 }
