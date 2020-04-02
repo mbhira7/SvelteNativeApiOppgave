@@ -6,6 +6,7 @@
     export let genresList
     export let getData
     export let apiKey
+    export let genre_ids
     let genreNames = []
     let showEmptyIcon = true
     const releaseYear = movie.release_date.slice(0, 4)
@@ -43,13 +44,8 @@
 
         if(!showEmptyIcon) {
             movies.doc(`${movie.id}`).set({
-                id: movie.id,
-                /*title: movie.title,
-                genres: genreNames.slice(0, 3),
-                genresId: movie.genre_ids,
-                year: releaseYear,
-                rating: movie.vote_average,
-                poster: "https://image.tmdb.org/t/p/w185" + movie.poster_path*/
+                id:movie.id,
+                title: 123
             })
         }
         else{

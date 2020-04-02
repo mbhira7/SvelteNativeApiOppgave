@@ -1,47 +1,55 @@
-
-    
-<flexBoxLayout class="m-y-60" style="flex-direction:column; margin:0 50 0 50;">
-            <image src={"https://image.tmdb.org/t/p/w185"+ movie.poster_path} class="test img-rounded " style="margin-top:18;" stretch="aspectFill"/>
-            <gridLayout  row="1" columns="180,*" style="margin-top:8;">
-                <label textAlignment="left" textWrap="true" row="1" col="0" class="font-weight-bold m-y-4 tekst" style="font-size:18; " text="{movie.title}" />
-                <gridLayout col="1" verticalAlignment="top" textAlignment="right">
-                    <label textAlignment="right" style="color:white; font-size:18;" class="font-weight-bold" text="{movie.vote_average}/10"/>
-                </gridLayout>
-            </gridLayout>
-            <flexBoxLayout>
-            {#each genreNames.slice(0,3) as genreName}
-                <label text="{genreName} | " class="tekst m-y-2" style="font-size:16;"/>
-            {/each}
-            </flexBoxLayout>
-            <label class="tekst m-y-4" style="font-size:16;" text="{movie.release_date.slice(0, 4)}" />
-            <label class="tekst" style="font-size:16;"col="0" textWrap="true" row="2" text="{movie.overview}"  lineHeight="7" />
-             <label class="font-weight-bold " text="Cast" style="color:white; margin-top:15; margin-bottom:10;"/>
-            <scrollView orientation="horizontal">
-            <flexBoxLayout style="flex-direction:row;">
-            {#each test.slice(0,5) as t}
-            <gridLayout rows="70,*" columns="115">
-                <flexBoxLayout row="0" col="0" >
-                    <image  row="0" col="0" stretch="aspectFill" class="-thumb img-circle" style="width:68;" src={"https://image.tmdb.org/t/p/w185"+ t.profile_path} />
-                </flexBoxLayout>
-                <label row="1" textWrap="true" flexWrapBefore={true} style="color:white; font-size:14; margin-right:20;" text="{t.name}" />
+<page>
+    <stackLayout class="bakgrunn">
+        <label style="color:white; text-align:center; margin-bottom:18; margin-top:12;" class="h2" text="Watchlist" />
+      <scrollView>
+        <flexBoxLayout class="movies">
+            {#each favourites as movie}
+             
+            <gridLayout class="border" on:tap={() => viewMovie(movie)} columns="120,*" rows="140">
+            
+                <image  col="0" row="0" src={"https://image.tmdb.org/t/p/w185"+ movie.poster_path}  class="img-rounded" style="margin-bottom:8;" stretc="aspectFit"/>
+           
+                <stackLayout col="1" row="1">
+                    <label textWrap="true" flexWrapBefore={true} verticalAlignment="top" text="{movie.title}" style="color:white; font-size:16;" class="font-weight-bold"/>
+                    <label text="{movie.release_date.slice(0, 4)}" style="color:white; font-size:15" />
+                    <flexBoxLayout>
+                        <label text="{movie.vote_average}" style="color:white" />
+                    </flexBoxLayout>
+                </stackLayout>
             </gridLayout>
             {/each}
-            </flexBoxLayout>
-            </scrollView>
         </flexBoxLayout>
+    </scrollView>
+    </stackLayout>
+
+</page>
 
 
-<script>
+<style>
+    .bakgrunn{
+        background-color: #101822;
+    }
 
-let indeks = chosenGenres.findIndex(g => g === id)
-        
-        genresList[i].clicked = !clicked
-        if(genresList[i].clicked === true && !chosenGenres.includes(genresList[i].id)) {
-            chosenGenres = [...chosenGenres, genresList[i].id].slice(0,3)
-        }
-       else {
-            chosenGenres.splice(indeks,1)
-        }
-        getData(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&&with_genres=${chosenGenres}`)
-            .then(res => genres = res.results)
-</script>
+
+    .border{
+        border-bottom-color: #181e25;
+        border-bottom-width: 3;
+        margin-bottom: 8;
+    }
+    
+
+    .movies{
+        flex-direction: column;
+    }
+
+    .rating-box{
+        margin-right:9;
+        justify-content: center;
+        align-items:center;
+        height:25;
+        width:30;
+        background-color: rgba(0,0,0,0.36);
+        border-radius:4;
+   }
+
+</style>
