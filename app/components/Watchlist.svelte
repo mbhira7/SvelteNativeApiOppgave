@@ -1,7 +1,7 @@
 <script>
     import { onMount } from 'svelte'
     import { db } from '../stores/stores.js'
-    let favourites = []
+    export let favourites 
 
 
 </script>

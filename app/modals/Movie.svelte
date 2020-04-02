@@ -35,7 +35,8 @@
                 title: movie.title,
                 genres: genreNames.slice(0, 3),
                 year: releaseYear,
-                rating: movie.vote_average
+                rating: movie.vote_average,
+                poster: "https://image.tmdb.org/t/p/w185" + movie.poster_path
             })
         }
         else{

@@ -56,11 +56,10 @@ onMount( async () => {
     const showFavourites = movies.onSnapshot(snapshot => {
             favourites=[]
             snapshot.forEach( favourite => {
-                    favourites = favourite.data()
+                favourites = [...favourites, {id:favourite.id, ...favourite.data()}]
             })
         })
     })
-
 </script>
 
 <page actionBarHidden={true}>

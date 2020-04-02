@@ -40,7 +40,7 @@
 <page>
     <stackLayout style="background-color: #101822; width:100%; height: 100%; padding:16;">
         <flexBoxLayout class="searchbar center">
-            <flexBoxLayout verticalAlignment="top" horizontalAlignment="right" >
+            <flexBoxLayout verticalAlignment="center" horizontalAlignment="right" >
                 <label class="h2 " text="Search" style="color:white;  margin-right:15;"/>
                 <flexBoxLayout style="height:70; width:22;" >
                     <image on:tap={() => showGenres = !showGenres} src="~/assets/images/filter.png"  style="height:100%; width:100%; " />
