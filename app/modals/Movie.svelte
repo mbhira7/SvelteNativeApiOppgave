@@ -33,7 +33,7 @@
         if(!showEmptyIcon) {
             movies.doc(`${movie.id}`).set({
                 title: movie.title,
-                genres: genreNames,
+                genres: genreNames.slice(0, 3),
                 year: releaseYear,
                 rating: movie.vote_average
             })

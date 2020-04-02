@@ -31,11 +31,8 @@
         if(genresList[i].clicked === false && chosenGenres.includes(genresList[i].id)) {
             chosenGenres.splice(indeks,1)
         }
-       
-        console.log(chosenGenres, clicked)
         getData(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&&with_genres=${chosenGenres}`)
             .then(res => genres = res.results)
-    
     }
 
 </script>

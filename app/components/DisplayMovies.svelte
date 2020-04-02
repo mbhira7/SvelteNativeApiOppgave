@@ -32,7 +32,7 @@
         <flexBoxLayout class= "search" style="background-color: #101822;
         width:100%;
         height: 100%;">
-        {#if array.length >= 1}
+        {#if array.length > 0}
             <label text="{heading}" class="font-weight-bold wite"/>
         {/if}
             <scrollView orientation="horizontal">
