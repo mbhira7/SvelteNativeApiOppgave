@@ -1,15 +1,26 @@
 <script>
     import {closeModal} from "svelte-native"
     import { db } from '../stores/stores.js'
+    import { onMount } from 'svelte'
     export let movie
-    export let test
     export let genresList
+    export let getData
+    export let apiKey
     let genreNames = []
     let showEmptyIcon = true
     const releaseYear = movie.release_date.slice(0, 4)
     let favourites = []
+    let test = []
     const movies = $db.collection("movies")
     const checkMovie = movies.doc(`${movie.id}`)
+    const details = `https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${apiKey}`
+
+    onMount(() => {
+    getData(details)
+        .then(res => test = res.cast)
+
+    })
+   
     
     checkMovie.onSnapshot(doc => {
         if (doc.exists) {
@@ -32,11 +43,13 @@
 
         if(!showEmptyIcon) {
             movies.doc(`${movie.id}`).set({
-                title: movie.title,
+                id: movie.id,
+                /*title: movie.title,
                 genres: genreNames.slice(0, 3),
+                genresId: movie.genre_ids,
                 year: releaseYear,
                 rating: movie.vote_average,
-                poster: "https://image.tmdb.org/t/p/w185" + movie.poster_path
+                poster: "https://image.tmdb.org/t/p/w185" + movie.poster_path*/
             })
         }
         else{

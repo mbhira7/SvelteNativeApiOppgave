@@ -10,18 +10,14 @@
     import { db } from '../stores/stores.js'
 
     const viewMovie = async (movie) => {
-        const details = `https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${apiKey}`
-        
-         await getData(details)
-            .then(res => test = res.cast)
-
         await showModal({
             page: Movie,
             fullscreen:true,
             props:{
                 movie:movie,
-                test:test,
-                genresList:genresList
+                genresList:genresList,
+                apiKey:apiKey,
+                getData:getData
             }
         })
     }

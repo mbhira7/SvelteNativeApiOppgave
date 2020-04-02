@@ -27,6 +27,8 @@
             .then(response => {
                 return resolve(response)
         })
+
+        console.log(url)
     })
 
 }
@@ -56,10 +58,13 @@ onMount( async () => {
     const showFavourites = movies.onSnapshot(snapshot => {
             favourites=[]
             snapshot.forEach( favourite => {
-                favourites = [...favourites, {id:favourite.id, ...favourite.data()}]
+                 getData(`https://api.themoviedb.org/3/movie/${favourite.id}?api_key=${apiKey}&language=en-US`)
+                    .then(res => favourites = [...favourites,res])
             })
         })
     })
+
+    console.log(favourites)
 </script>
 
 <page actionBarHidden={true}>
@@ -93,7 +98,7 @@ onMount( async () => {
         </tabContentItem>
 
         <tabContentItem>
-            <Watchlist genresList={genresList} favourites={favourites}/>
+            <Watchlist getData={getData} apiKey={apiKey} genresList={genresList} favourites={favourites}/>
         </tabContentItem>
     </tabs>
     </stackLayout>
