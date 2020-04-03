@@ -1,55 +1,66 @@
-<page>
-    <stackLayout class="bakgrunn">
-        <label style="color:white; text-align:center; margin-bottom:18; margin-top:12;" class="h2" text="Watchlist" />
-      <scrollView>
-        <flexBoxLayout class="movies">
-            {#each favourites as movie}
-             
-            <gridLayout class="border" on:tap={() => viewMovie(movie)} columns="120,*" rows="140">
-            
-                <image  col="0" row="0" src={"https://image.tmdb.org/t/p/w185"+ movie.poster_path}  class="img-rounded" style="margin-bottom:8;" stretc="aspectFit"/>
-           
-                <stackLayout col="1" row="1">
-                    <label textWrap="true" flexWrapBefore={true} verticalAlignment="top" text="{movie.title}" style="color:white; font-size:16;" class="font-weight-bold"/>
-                    <label text="{movie.release_date.slice(0, 4)}" style="color:white; font-size:15" />
-                    <flexBoxLayout>
-                        <label text="{movie.vote_average}" style="color:white" />
-                    </flexBoxLayout>
-                </stackLayout>
-            </gridLayout>
-            {/each}
-        </flexBoxLayout>
-    </scrollView>
-    </stackLayout>
 
+<page>
+    <stackLayout style="background-color: #101822; width:100%; height: 100%; padding:16;">
+        <flexBoxLayout class="searchbar center">
+            <flexBoxLayout verticalAlignment="top" horizontalAlignment="right" >
+                <label class="h2 " text="Search" style="color:white;  margin-right:15;"/>
+                <flexBoxLayout style="height:70; width:22;" >
+                    <image on:tap={() => showGenres = !showGenres} src="~/assets/images/filter.png"  style="height:100%; width:100%; " />
+                </flexBoxLayout>
+            </flexBoxLayout>
+
+                {#if !showGenres}
+                    <searchBar  on:textChange={titleSearch} style=" height:45; width:100%; margin-bottom:18;" hint="Search for movies" bind:text={searchValue}/>
+                {/if}
+            </flexBoxLayout>
+            
+
+        {#if showGenres}
+            <scrollView orientation="horizontal">
+            <flexBoxLayout >
+            {#each genresList as genre, index}
+                 {#if chosenGenres.includes(genre.id)}
+                    <flexBoxLayout style="background-color:black" class="genre-div">
+                        <label on:tap={() => genreSearch(genre.clicked, genre.id,index)} style="color:white; font-size:13; font-weight:bold;" text={genre.name}/>
+                    </flexBoxLayout>
+                {:else}
+                    <flexBoxLayout style="background-color: rgba(156, 156, 156, 0.3)" class="genre-div">
+                        <label on:tap={() => genreSearch(genre.clicked, genre.id,index)} style="color:white; font-size:13; font-weight:bold;" text={genre.name}/>
+                    </flexBoxLayout>
+                {/if}
+            {/each}
+            </flexBoxLayout>
+            </scrollView>
+         {/if}
+         <scrollView>
+         {#if showGenres}
+            <DisplayMovies heading="Search results" array={genres} getData={getData} genresList={genresList}/> 
+        {:else}
+            <DisplayMovies heading="Search results" array={results} getData={getData} genresList={genresList}/> 
+        {/if}
+        </scrollView>
+    </stackLayout>
 </page>
 
 
 <style>
-    .bakgrunn{
-        background-color: #101822;
-    }
-
-
-    .border{
-        border-bottom-color: #181e25;
-        border-bottom-width: 3;
-        margin-bottom: 8;
-    }
-    
-
-    .movies{
-        flex-direction: column;
-    }
-
-    .rating-box{
-        margin-right:9;
-        justify-content: center;
-        align-items:center;
-        height:25;
-        width:30;
-        background-color: rgba(0,0,0,0.36);
-        border-radius:4;
+    page{
+        background-color: #000b1a10;
+        width:100%;
+        height: 100%;
    }
-
+    .searchbar{
+        flex-direction:column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        margin-top:10;
+    }
+    .genre-div{
+        width:auto;
+        height:auto;
+        margin-bottom:20;
+        padding:7;
+        margin-right:15;
+        border-radius:16;
+    }
 </style>

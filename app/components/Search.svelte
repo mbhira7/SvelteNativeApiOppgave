@@ -37,24 +37,25 @@
 
 </script>
 
-<page>
-    <stackLayout style="background-color: #101822; width:100%; height: 100%; padding:16;">
-        <flexBoxLayout class="searchbar center">
-            <flexBoxLayout verticalAlignment="top" horizontalAlignment="right" >
-                <label class="h2 " text="Search" style="color:white;  margin-right:15;"/>
-                <flexBoxLayout style="height:70; width:22;" >
-                    <image on:tap={() => showGenres = !showGenres} src="~/assets/images/filter.png"  style="height:100%; width:100%; " />
+  <page>
+    <stackLayout style="background-color: #101822; padding:16; ">
+        <flexBoxLayout style=" flex-direction:row; margin-bottom:14; " >
+            <label class="h2 " text="Search" style="color:white;  margin-right:15; "/>
+            <flexBoxLayout style="justify-content:flex-start;">
+                <flexBoxLayout horizontalAlignment="left" verticalAlignment="top"  style="height:20; width:22; " >
+                    <image on:tap={() => showGenres = !showGenres} src="~/assets/images/filter.png" style="height:100%; width:100%; " />
                 </flexBoxLayout>
             </flexBoxLayout>
+        </flexBoxLayout>
+         <stackLayout>
 
                 {#if !showGenres}
-                    <searchBar  on:textChange={titleSearch} style=" height:45; width:100%; margin-bottom:18;" hint="Search for movies" bind:text={searchValue}/>
+                    <searchBar  on:textChange={titleSearch} style=" height:45; width:100%;  margin-bottom:18;" hint="Search for movies" bind:text={searchValue}/>
                 {/if}
-            </flexBoxLayout>
-            
-
+                
+        </stackLayout>
         {#if showGenres}
-            <scrollView orientation="horizontal">
+            <scrollView orientation="horizontal" >
             <flexBoxLayout >
             {#each genresList as genre, index}
                  {#if chosenGenres.includes(genre.id)}
@@ -77,6 +78,7 @@
             <DisplayMovies heading="Search results" array={results} getData={getData} genresList={genresList}/> 
         {/if}
         </scrollView>
+        
     </stackLayout>
 </page>
 
@@ -87,13 +89,7 @@
         width:100%;
         height: 100%;
    }
-    .searchbar{
-        flex-direction:column;
-        align-items: flex-start;
-        justify-content: flex-start;
-        margin-top:10;
-    }
-
+    
     .genre-div{
         width:auto;
         height:auto;
