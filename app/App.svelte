@@ -4,10 +4,7 @@
     import Watchlist from "./components/Watchlist.svelte"
     import { db } from './stores/stores.js'
     import { onMount } from 'svelte'
-    import { registerNativeViewElement } from 'svelte-native/dom'
 
-registerNativeViewElement("cardView", () => 
-    require("@nstudio/nativescript-cardview").CardView)
     const apiKey = "cffa047e4f2e83b565d15715e66d2a35"
     let selectedTab = 0
     let favourites = []
@@ -64,7 +61,7 @@ onMount( async () => {
     const showFavourites = movies.onSnapshot(snapshot => {
             favourites=[]
             snapshot.forEach( favourite => {
-                //getData(`https://api.themoviedb.org/3/search/movie?query=maayavi&api_key=${apiKey}`)
+                //getData(`https://api.themoviedb.org/3/search/movie?query=${movie.title}&api_key=${apiKey}`)
                     getData(`https://api.themoviedb.org/3/movie/${favourite.id}?api_key=${apiKey}`)
                         .then((res => favourites = [...favourites,res]))
 

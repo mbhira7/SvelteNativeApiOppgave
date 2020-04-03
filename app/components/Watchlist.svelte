@@ -29,19 +29,21 @@
     <stackLayout class="bakgrunn">
         <label style="color:white; text-align:center; margin-bottom:18; margin-top:12;" class="h2" text="Watchlist" />
       <scrollView>
-        <flexBoxLayout class="movies">
+        <flexBoxLayout class="movies" >
             {#each favourites as movie}
-             
-            <gridLayout class="border" on:tap={() => viewMovie(movie)} columns="120,*" rows="140">
-            
-                <image  col="0" row="0" src={"https://image.tmdb.org/t/p/w185"+ movie.poster_path}  class="img-rounded" style="margin-bottom:11;" stretc="aspectFit"/>
-           
+            <gridLayout style="padding:10;" class="border" on:tap={() => viewMovie(movie)} columns="120,*" rows="140">
+                <image  col="0" row="0" src={"https://image.tmdb.org/t/p/w185"+ movie.poster_path}  class="img-rounded" stretc="aspectFit"/>
                 <stackLayout col="1" row="1">
                     <label textWrap="true" flexWrapBefore={true} verticalAlignment="top" text="{movie.title}" style="color:white; font-size:16;" class="font-weight-bold"/>
-                    <label text="{movie.release_date.slice(0, 4)}" style="color:white; font-size:15; margin-top:5; margin-bottom:5;" />
+                    <label text="{movie.release_date.slice(0, 4)}" style="color:white; font-size:15; margin-top:5; " />
+                     <flexBoxLayout style="flex-direction:row;">
+                    {#each movie.genres.slice(0,3) as genre}
+                       <label text="{genre.name} | " style="color:white; margin-bottom:6;" />
+                    {/each}
+                    </flexBoxLayout>
                     <flexBoxLayout style="justify-content:flex-start;">
                     <flexBoxLayout class="rating-box">
-                        <label text="{movie.vote_average}" style="color:white" />
+                        <label text="{movie.vote_average}" style="color:white; " />
                     </flexBoxLayout>
                     </flexBoxLayout>
                 </stackLayout>
@@ -63,7 +65,6 @@
     .border{
         border-bottom-color: #181e25;
         border-bottom-width: 3;
-        margin-bottom: 11;
     }
     
 

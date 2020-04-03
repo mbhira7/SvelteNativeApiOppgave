@@ -19,8 +19,6 @@
   "license": "Apache-2.0",
   "repository": "https://github.com/halfnelson/svelte-native-template",
   "dependencies": {
-    "@nstudio/nativescript-cardview": "^1.0.0",
-    "nativescript-fontawesome": "^1.0.0",
     "nativescript-plugin-firebase": "^10.5.0",
     "nativescript-theme-core": "~2.0.24",
     "svelte-native": "~0.8.0",

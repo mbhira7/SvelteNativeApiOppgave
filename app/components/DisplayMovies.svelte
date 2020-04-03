@@ -8,6 +8,7 @@
     let test = []
     const apiKey="cffa047e4f2e83b565d15715e66d2a35"
     import { db } from '../stores/stores.js'
+    const showGenres = true
 
     const viewMovie = async (movie) => {
         await showModal({
@@ -17,7 +18,8 @@
                 movie:movie,
                 genresList:genresList,
                 apiKey:apiKey,
-                getData:getData
+                getData:getData,
+                showGenres:showGenres
             }
         })
     }
