@@ -23,9 +23,9 @@ onMount(() => {
 </script>
 
 <page >
-    <stackLayout style="background-color: #101822; width:100%; height: 100%; ">
+    <stackLayout class="background">
         <flexBoxLayout class="header" androidElevation="80">
-            <label  text="Movie Database" style="color:orange;  font-size: 22; font-family: Courier, monospace;"/>
+            <label  text="Movie Database" style="color:orange; font-size: 22; font-family: Courier, monospace;"/>
         </flexBoxLayout>
         <scrollView >
             <stackLayout style="padding:14;">
@@ -37,13 +37,6 @@ onMount(() => {
 </page>
 
 <style>
-
-    page{
-        background-color: #101822;
-        width:100%;
-        height: 100%;
-    }
-
 
     .header{
         margin-bottom:16;

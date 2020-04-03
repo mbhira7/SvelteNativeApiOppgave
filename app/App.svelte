@@ -59,15 +59,14 @@ onMount( async () => {
     $db = await initFirebase()
     const movies = $db.collection("movies")
     const showFavourites = movies.onSnapshot(snapshot => {
-            favourites=[]
-            snapshot.forEach( favourite => {
-                //getData(`https://api.themoviedb.org/3/search/movie?query=${movie.title}&api_key=${apiKey}`)
-                    getData(`https://api.themoviedb.org/3/movie/${favourite.id}?api_key=${apiKey}`)
-                        .then((res => favourites = [...favourites,res]))
+        favourites=[]
+        snapshot.forEach( favourite => {
+            getData(`https://api.themoviedb.org/3/movie/${favourite.id}?api_key=${apiKey}`)
+                .then((res => favourites = [...favourites,res]))
 
-            })
         })
     })
+})
 
 </script>
 
@@ -110,10 +109,6 @@ onMount( async () => {
 
 <style>
 
-   page{
-       background-color: #101822;
-   }
-
    .tabstrip-label{
        justify-content: center;
        align-items: center;
@@ -125,15 +120,11 @@ onMount( async () => {
    }
 
    .fas{
-        font-family: "Font Awesome 5 Free", "fa-solid-900";
-        font-weight: 900;
         color:white;
    }
 
    .far {
-    font-family: "Font Awesome 5 Free", "fa-regular-400";
-    font-weight: 400;
-    color:white;
+        color:white;
    }
 
     .white{

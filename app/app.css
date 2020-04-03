@@ -13,3 +13,15 @@ The imported CSS rules must precede all other types of rules.
 @import '~nativescript-theme-core/css/core.css';
 @import './font-awesome.css';
 
+
+.background{
+   background-color: #101822;
+}
+
+.white{
+    color:white;
+}
+
+page{
+    background-color: #101822;
+}

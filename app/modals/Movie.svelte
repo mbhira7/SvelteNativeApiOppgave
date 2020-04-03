@@ -73,7 +73,7 @@
             <gridLayout  row="1" columns="180,*" style="margin-top:8;">
                 <label textAlignment="left" textWrap="true" row="1" col="0" class="font-weight-bold m-y-4 tekst" style="font-size:18; " text="{movie.title}" />
                 <gridLayout col="1" verticalAlignment="top" textAlignment="right">
-                    <label textAlignment="right" style="color:white; font-size:18;" class="font-weight-bold m-y-4" text="{movie.vote_average}/10"/>
+                    <label textAlignment="right" style="font-size:18;" class="font-weight-bold m-y-4 white" text="{movie.vote_average}/10"/>
                 </gridLayout>
             </gridLayout>
         <flexBoxLayout>
@@ -96,7 +96,7 @@
         </flexBoxLayout>
             <label class="tekst m-y-4" style="font-size:16;" text="{releaseYear}" />
             <label class="tekst" style="font-size:16;"col="0" textWrap="true" row="2" text="{movie.overview}"  lineHeight="7" />
-            <label class="font-weight-bold " text="Cast" style="color:white; margin-top:15; margin-bottom:10;"/>
+            <label class="font-weight-bold white" text="Cast" style="margin-top:15; margin-bottom:10;"/>
             <scrollView orientation="horizontal">
                 <flexBoxLayout style="flex-direction:row;">
                     {#each test.slice(0,5) as t}
@@ -116,11 +116,7 @@
 
 
 <style>
-    page{
-        background-color:#0d141d;
-        width:100%;
-    }
-
+    
    .tekst{
        color:rgb(255, 255, 255);
    }
