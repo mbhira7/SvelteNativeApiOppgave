@@ -45,7 +45,7 @@
         if(!showEmptyIcon) {
             movies.doc(`${movie.id}`).set({
                 id:movie.id,
-                title: 123
+                title: movie.title
             })
         }
         else{
