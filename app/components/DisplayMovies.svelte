@@ -3,7 +3,6 @@
     export let heading
     import {showModal} from "svelte-native"
     import Movie from "../modals/Movie.svelte"
-    //export let getData
     export let genresList
     let test = []
     const apiKey="cffa047e4f2e83b565d15715e66d2a35"
