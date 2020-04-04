@@ -73,9 +73,9 @@
          {/if}
          <scrollView>
          {#if showGenres}
-            <DisplayMovies heading="Search results" array={genres} getData={getData} genresList={genresList}/> 
+            <DisplayMovies heading="Search results" array={genres}  genresList={genresList}/> 
         {:else}
-            <DisplayMovies heading="Search results" array={results} getData={getData} genresList={genresList}/> 
+            <DisplayMovies heading="Search results" array={results}  genresList={genresList}/> 
         {/if}
         </scrollView>
         

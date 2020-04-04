@@ -4,9 +4,8 @@
     import { onMount } from 'svelte'
     export let movie
     export let genresList
-    export let getData
+    import {getData} from "../constants/constant.js"
     export let apiKey
-    export let showGenres
     let genreNames = []
     let showEmptyIcon = true
     const releaseYear = movie.release_date.slice(0, 4)
@@ -32,7 +31,7 @@
         }
     })
 
-   if(showGenres) {
+   if(genresList) {
         movie.genre_ids.forEach(
             movieId => {
                 const indeks = genresList.findIndex(genre => genre.id === movieId)
@@ -77,7 +76,7 @@
                 </gridLayout>
             </gridLayout>
         <flexBoxLayout>
-        {#if showGenres}
+        {#if genresList}
             {#each genreNames.slice(0,3) as genreName}
                 <label textWrap="true" text="{genreName} | " class="tekst m-y-2" style="font-size:16;"/>
             {/each}

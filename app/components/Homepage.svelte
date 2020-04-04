@@ -2,7 +2,7 @@
     import {onMount} from "svelte"
     import DisplayMovies from "./DisplayMovies.svelte"
     export let apiKey
-    export let getData 
+    import {getData} from "../constants/constant.js"
     export let genresList 
     const trendingMoviesUrl = `https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=${apiKey}`
     const newMoviesUrl = `https://api.themoviedb.org/3/discover/movie?primary_release_year=2020&api_key=${apiKey}`

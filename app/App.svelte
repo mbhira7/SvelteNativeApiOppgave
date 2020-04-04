@@ -4,6 +4,7 @@
     import Watchlist from "./components/Watchlist.svelte"
     import { db } from './stores/stores.js'
     import { onMount } from 'svelte'
+    import {getData} from "./constants/constant.js"
 
     const apiKey = "cffa047e4f2e83b565d15715e66d2a35"
     let selectedTab = 0
@@ -21,18 +22,6 @@
         genresList[i].clicked = false
     }
 
-    const getData = (url) => {
-        return new Promise(resolve => {
-            fetch(url)
-            .then(response => response.json())
-            .then(response => {
-                return resolve(response)
-        })
-
-        console.log(url)
-    })
-
-}
 
 const firebase = require("nativescript-plugin-firebase/app")
     
@@ -51,8 +40,6 @@ const initFirebase = () => {
          )
     })
 }
-
-
 
 onMount( async () => {
     console.log('App mounts..')
@@ -93,15 +80,15 @@ onMount( async () => {
         </tabStrip>
 
         <tabContentItem >
-            <Homepage getData={getData} apiKey={apiKey} genresList={genresList}/>
+            <Homepage apiKey={apiKey} genresList={genresList}/>
         </tabContentItem>
         
         <tabContentItem>
-            <Search getData={getData} apiKey={apiKey}  genresList={genresList}/>
+            <Search apiKey={apiKey}  genresList={genresList}/>
         </tabContentItem>
 
         <tabContentItem>
-            <Watchlist getData={getData} apiKey={apiKey} genresList={genresList} favourites={favourites}/>
+            <Watchlist apiKey={apiKey} favourites={favourites}/>
         </tabContentItem>
     </tabs>
     </stackLayout>

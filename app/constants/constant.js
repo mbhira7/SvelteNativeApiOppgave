@@ -8,5 +8,3 @@ export const getData = (url) => {
         })
     })
 }
-
-export let name = "bhiravina"

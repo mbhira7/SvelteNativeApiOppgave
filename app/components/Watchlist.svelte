@@ -2,8 +2,6 @@
     import { onMount } from 'svelte'
     import { db } from '../stores/stores.js'
     export let favourites 
-    export let getData
-    export let genresList
     export let apiKey
     import {showModal} from "svelte-native"
     import Movie from "../modals/Movie.svelte"
@@ -15,9 +13,7 @@
             fullscreen:true,
             props:{
                 movie:movie,
-                genresList:genresList,
-                apiKey:apiKey,
-                getData:getData
+                apiKey:apiKey
             }
         })
     }
@@ -30,9 +26,9 @@
       <scrollView>
         <flexBoxLayout class="movies" >
             {#each favourites as movie}
-            <gridLayout style="padding:10;" class="border" on:tap={() => viewMovie(movie)} columns="120,*" rows="140">
+            <gridLayout style="padding:10;" class="border" on:tap={() => viewMovie(movie)} columns="100,*" rows="140">
                 <image  col="0" row="0" src={"https://image.tmdb.org/t/p/w185"+ movie.poster_path}  class="img-rounded" />
-                <stackLayout col="1" row="1">
+                <stackLayout col="1" row="1" style="margin-left:10;">
                     <label textWrap="true" flexWrapBefore={true} verticalAlignment="top" text="{movie.title}" style="font-size:16;" class="white font-weight-bold"/>
                     <label text="{movie.release_date.slice(0, 4)}" style="color:white; font-size:15; margin-top:5; " />
                      <flexBoxLayout style="flex-direction:row;">
