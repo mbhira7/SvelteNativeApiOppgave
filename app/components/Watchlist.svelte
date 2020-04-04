@@ -26,7 +26,7 @@
       <scrollView>
         <flexBoxLayout class="movies" >
             {#each favourites as movie}
-            <gridLayout style="padding:10;" class="border" on:tap={() => viewMovie(movie)} columns="100,*" rows="140">
+            <gridLayout style="padding:10;" class="border" on:tap={() => viewMovie(movie)} columns="90,*" rows="140">
                 <image  col="0" row="0" src={"https://image.tmdb.org/t/p/w185"+ movie.poster_path}  class="img-rounded" />
                 <stackLayout col="1" row="1" style="margin-left:10;">
                     <label textWrap="true" flexWrapBefore={true} verticalAlignment="top" text="{movie.title}" style="font-size:16;" class="white font-weight-bold"/>
