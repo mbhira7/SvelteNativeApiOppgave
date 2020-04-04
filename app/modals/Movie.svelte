@@ -68,9 +68,9 @@
         </actionBar>
     <scrollView>
         <flexBoxLayout class="m-y-60" style="flex-direction:column; margin:0 50 0 50;">
-            <image src={"https://image.tmdb.org/t/p/w185"+ movie.poster_path} class="test img-rounded " style="margin-top:18; " stretch="aspectFill"/>
+            <image src={"https://image.tmdb.org/t/p/w185"+ movie.poster_path} class="image img-rounded " style="margin-top:18; " stretch="aspectFill"/>
             <gridLayout  row="1" columns="180,*" style="margin-top:8;">
-                <label textAlignment="left" textWrap="true" row="1" col="0" class="font-weight-bold m-y-4 tekst" style="font-size:18; " text="{movie.title}" />
+                <label textAlignment="left" textWrap="true" row="1" col="0" class="font-weight-bold m-y-4 white" style="font-size:18; " text="{movie.title}" />
                 <gridLayout col="1" verticalAlignment="top" textAlignment="right">
                     <label textAlignment="right" style="font-size:18;" class="font-weight-bold m-y-4 white" text="{movie.vote_average}/10"/>
                 </gridLayout>
@@ -78,11 +78,11 @@
         <flexBoxLayout>
         {#if genresList}
             {#each genreNames.slice(0,3) as genreName}
-                <label textWrap="true" text="{genreName} | " class="tekst m-y-2" style="font-size:16;"/>
+                <label textWrap="true" text="{genreName} | " class="white m-y-2" style="font-size:16;"/>
             {/each}
         {:else}
             {#each movie.genres.slice(0,3) as genre}
-                <label textWrap="true" text="{genre.name} | " class="tekst m-y-2" style="font-size:16;" />
+                <label textWrap="true" text="{genre.name} | " class="white m-y-2" style="font-size:16;" />
             {/each}
         {/if}
             <flexBoxLayout style="height:30; width:18;">
@@ -93,8 +93,8 @@
                 {/if}
             </flexBoxLayout>
         </flexBoxLayout>
-            <label class="tekst m-y-4" style="font-size:16;" text="{releaseYear}" />
-            <label class="tekst" style="font-size:16;"col="0" textWrap="true" row="2" text="{movie.overview}"  lineHeight="7" />
+            <label class="white m-y-4" style="font-size:16;" text="{releaseYear}" />
+            <label class="white" style="font-size:16;"col="0" textWrap="true" row="2" text="{movie.overview}"  lineHeight="7" />
             <label class="font-weight-bold white" text="Cast" style="margin-top:15; margin-bottom:10;"/>
             <scrollView orientation="horizontal">
                 <flexBoxLayout style="flex-direction:row;">
@@ -116,11 +116,7 @@
 
 <style>
     
-   .tekst{
-       color:rgb(255, 255, 255);
-   }
-
-    .test{
+    .image{
         height:370;
     }
 
