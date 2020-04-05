@@ -6,6 +6,7 @@
     export let genresList
     import {getData} from "../constants/constant.js"
     export let apiKey
+    export let showGenres
     let genreNames = []
     let showEmptyIcon = true
     const releaseYear = movie.release_date.slice(0, 4)
@@ -31,10 +32,18 @@
         }
     })
 
-   if(genresList) {
+   if(showGenres) {
         movie.genre_ids.forEach(
             movieId => {
                 const indeks = genresList.findIndex(genre => genre.id === movieId)
+                genreNames = [...genreNames, genresList[indeks].name]    
+            }
+        )
+    }
+    else{
+        movie.genres.forEach(
+            movie => {
+                const indeks = genresList.findIndex(genre => genre.id === movie.id)
                 genreNames = [...genreNames, genresList[indeks].name]    
             }
         )
@@ -76,15 +85,9 @@
                 </gridLayout>
             </gridLayout>
         <flexBoxLayout>
-        {#if genresList}
             {#each genreNames.slice(0,3) as genreName}
-                <label textWrap="true" text="{genreName} | " class="white m-y-2" style="font-size:16;"/>
+                <label textWrap="true" text="{genreName} | " class="white m-y-2" style="font-size:16;" />
             {/each}
-        {:else}
-            {#each movie.genres.slice(0,3) as genre}
-                <label textWrap="true" text="{genre.name} | " class="white m-y-2" style="font-size:16;" />
-            {/each}
-        {/if}
             <flexBoxLayout style="height:30; width:18;">
                 {#if showEmptyIcon}
                     <image on:tap={addAndDelete} src="font://&#xf02e;" style="height:100%; width:100%;" class="far" />

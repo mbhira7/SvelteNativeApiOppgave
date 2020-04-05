@@ -16,7 +16,8 @@
             props:{
                 movie:movie,
                 genresList:genresList,
-                apiKey:apiKey
+                apiKey:apiKey,
+                showGenres:showGenres
             }
         })
     }

@@ -3,9 +3,9 @@
     import { db } from '../stores/stores.js'
     export let favourites 
     export let apiKey
+    export let genresList
     import {showModal} from "svelte-native"
     import Movie from "../modals/Movie.svelte"
-    let favouriteDetails = []
 
     const viewMovie = async (movie) => {
         await showModal({
@@ -13,10 +13,12 @@
             fullscreen:true,
             props:{
                 movie:movie,
-                apiKey:apiKey
+                apiKey:apiKey,
+                genresList,genresList
             }
         })
     }
+    
 </script>
 
 
