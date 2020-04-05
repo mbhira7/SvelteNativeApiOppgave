@@ -88,7 +88,7 @@ onMount( async () => {
         </tabContentItem>
 
         <tabContentItem>
-            <Watchlist apiKey={apiKey} favourites={favourites} genresList={genresList}/>
+            <Watchlist apiKey={apiKey} favourites={favourites}  genresList={genresList}/>
         </tabContentItem>
     </tabs>
     </stackLayout>

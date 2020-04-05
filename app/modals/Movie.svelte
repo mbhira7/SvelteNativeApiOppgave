@@ -11,14 +11,14 @@
     let showEmptyIcon = true
     const releaseYear = movie.release_date.slice(0, 4)
     let favourites = []
-    let test = []
+    let actors = []
     const movies = $db.collection("movies")
     const checkMovie = movies.doc(`${movie.id}`)
     const details = `https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${apiKey}`
 
     onMount(() => {
     getData(details)
-        .then(res => test = res.cast)
+        .then(res => actors = res.cast)
 
     })
    
@@ -86,7 +86,7 @@
             </gridLayout>
         <flexBoxLayout>
             {#each genreNames.slice(0,3) as genreName}
-                <label textWrap="true" text="{genreName} | " class="white m-y-2" style="font-size:16;" />
+                <label textWrap="true" text="{genreName} | " class="white m-y-2" style="font-size:16;"/>
             {/each}
             <flexBoxLayout style="height:30; width:18;">
                 {#if showEmptyIcon}
@@ -101,12 +101,12 @@
             <label class="font-weight-bold white" text="Cast" style="margin-top:15; margin-bottom:10;"/>
             <scrollView orientation="horizontal">
                 <flexBoxLayout style="flex-direction:row;">
-                    {#each test.slice(0,5) as t}
+                    {#each actors.slice(0,5) as actor}
                         <gridLayout rows="70,*" columns="115">
                             <flexBoxLayout row="0" col="0" >
-                                <image  row="0" col="0" stretch="aspectFill" class="-thumb img-circle" style="width:68;" src={"https://image.tmdb.org/t/p/w185"+ t.profile_path} />
+                                <image  row="0" col="0" stretch="aspectFill" class="-thumb img-circle" style="width:68;" src={"https://image.tmdb.org/t/p/w185"+ actor.profile_path} />
                             </flexBoxLayout>
-                            <label row="1" textWrap="true" flexWrapBefore={true} style="color:white; font-size:14; margin-right:20;" text="{t.name}" />
+                            <label row="1" textWrap="true" flexWrapBefore={true} style="color:white; font-size:14; margin-right:20;" text="{actor.name}" />
                         </gridLayout>
                     {/each}
                 </flexBoxLayout>

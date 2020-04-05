@@ -3,9 +3,9 @@
     import { db } from '../stores/stores.js'
     export let favourites 
     export let apiKey
-    export let genresList
     import {showModal} from "svelte-native"
     import Movie from "../modals/Movie.svelte"
+    export let genresList
 
     const viewMovie = async (movie) => {
         await showModal({
@@ -14,11 +14,10 @@
             props:{
                 movie:movie,
                 apiKey:apiKey,
-                genresList,genresList
+                genresList:genresList
             }
         })
     }
-    
 </script>
 
 
