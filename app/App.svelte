@@ -48,8 +48,9 @@ onMount( async () => {
     const showFavourites = movies.onSnapshot(snapshot => {
         favourites=[]
         snapshot.forEach( favourite => {
-            getData(`https://api.themoviedb.org/3/movie/${favourite.id}?api_key=${apiKey}`)
-                .then((res => favourites = [...favourites,res]))
+             favourites = [...favourites, {id:favourite.id, ...favourite.data()}]
+            //getData(`https://api.themoviedb.org/3/movie/${favourite.id}?api_key=${apiKey}`)
+                //.then((res => favourites = [...favourites,res]))
 
         })
     })

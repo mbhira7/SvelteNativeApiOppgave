@@ -48,11 +48,9 @@
             </flexBoxLayout>
         </flexBoxLayout>
          <stackLayout>
-
-                {#if !showGenres}
-                    <searchBar  on:textChange={titleSearch} style=" height:45; width:100%;  margin-bottom:18;" hint="Search for movies" bind:text={searchValue}/>
-                {/if}
-                
+            {#if !showGenres}
+                <searchBar  on:textChange={titleSearch} style=" height:45; width:100%;  margin-bottom:18;" hint="Search for movies" bind:text={searchValue}/>
+            {/if}    
         </stackLayout>
         {#if showGenres}
             <scrollView orientation="horizontal" >

@@ -6,16 +6,14 @@
     export let genresList
     import {getData} from "../constants/constant.js"
     export let apiKey
-    export let showGenres
     let genreNames = []
     let showEmptyIcon = true
-    const releaseYear = movie.release_date.slice(0, 4)
-    let favourites = []
     let actors = []
     const movies = $db.collection("movies")
     const checkMovie = movies.doc(`${movie.id}`)
     const details = `https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${apiKey}`
 
+   
     onMount(() => {
     getData(details)
         .then(res => actors = res.cast)
@@ -32,30 +30,27 @@
         }
     })
 
-   if(showGenres) {
-        movie.genre_ids.forEach(
-            movieId => {
-                const indeks = genresList.findIndex(genre => genre.id === movieId)
-                genreNames = [...genreNames, genresList[indeks].name]    
-            }
-        )
-    }
-    else{
-        movie.genres.forEach(
-            movie => {
-                const indeks = genresList.findIndex(genre => genre.id === movie.id)
-                genreNames = [...genreNames, genresList[indeks].name]    
-            }
-        )
-    }
-
+  
+    movie.genre_ids.forEach(
+        movieId => {
+            const indeks = genresList.findIndex(genre => genre.id === movieId)
+            genreNames = [...genreNames, genresList[indeks].name]    
+        }
+    )
+   
     const addAndDelete = () => {
         showEmptyIcon = !showEmptyIcon
 
         if(!showEmptyIcon) {
             movies.doc(`${movie.id}`).set({
                 id:movie.id,
-                title: movie.title
+                title: movie.title,
+                poster_path: movie.poster_path,
+                genre_ids:movie.genre_ids,
+                genre_names:genreNames,
+                vote_average:movie.vote_average,
+                overview:movie.overview,
+                release_date:movie.release_date
             })
         }
         else{
@@ -96,7 +91,7 @@
                 {/if}
             </flexBoxLayout>
         </flexBoxLayout>
-            <label class="white m-y-4" style="font-size:16;" text="{releaseYear}" />
+            <label class="white m-y-4" style="font-size:16;" text="{movie.release_date.slice(0, 4)}" />
             <label class="white" style="font-size:16;"col="0" textWrap="true" row="2" text="{movie.overview}"  lineHeight="7" />
             <label class="font-weight-bold white" text="Cast" style="margin-top:15; margin-bottom:10;"/>
             <scrollView orientation="horizontal">

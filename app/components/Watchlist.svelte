@@ -33,8 +33,8 @@
                     <label textWrap="true" flexWrapBefore={true} verticalAlignment="top" text="{movie.title}" style="font-size:16;" class="white font-weight-bold"/>
                     <label text="{movie.release_date.slice(0, 4)}" style="color:white; font-size:15; margin-top:5; " />
                      <flexBoxLayout style="flex-direction:row;">
-                    {#each movie.genres.slice(0,3) as genre}
-                       <label text="{genre.name} | " style="color:white; margin-bottom:6;" />
+                    {#each movie.genre_names.slice(0,3) as genre}
+                       <label text="{genre} | " style="color:white; margin-bottom:6;" />
                     {/each}
                     </flexBoxLayout>
                     <flexBoxLayout style="justify-content:flex-start;">
