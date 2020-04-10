@@ -29,8 +29,8 @@ onMount(() => {
         </flexBoxLayout>
         <scrollView >
             <stackLayout style="padding:14;">
-                <DisplayMovies heading="New releases" genresList={genresList} array={newMovies} getData={getData} />
-                <DisplayMovies heading="Trending movies" genresList={genresList} array={trendingMovies} getData={getData} />
+                <DisplayMovies heading="New releases" genresList={genresList} array={newMovies} />
+                <DisplayMovies heading="Trending movies" genresList={genresList} array={trendingMovies} />
             </stackLayout>
         </scrollView>
     </stackLayout>  

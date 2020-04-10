@@ -11,16 +11,15 @@
     let actors = []
     const movies = $db.collection("movies")
     const checkMovie = movies.doc(`${movie.id}`)
-    const details = `https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${apiKey}`
+    const casting = `https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${apiKey}`
 
    
     onMount(() => {
-    getData(details)
+    getData(casting)
         .then(res => actors = res.cast)
 
     })
    
-    
     checkMovie.onSnapshot(doc => {
         if (doc.exists) {
             showEmptyIcon = false
@@ -95,14 +94,14 @@
             <label class="white" style="font-size:16;"col="0" textWrap="true" row="2" text="{movie.overview}"  lineHeight="7" />
             <label class="font-weight-bold white" text="Cast" style="margin-top:15; margin-bottom:10;"/>
             <scrollView orientation="horizontal">
-                <flexBoxLayout style="flex-direction:row;">
+                <flexBoxLayout >
                     {#each actors.slice(0,5) as actor}
-                        <gridLayout rows="70,*" columns="115">
-                            <flexBoxLayout row="0" col="0" >
-                                <image  row="0" col="0" stretch="aspectFill" class="-thumb img-circle" style="width:68;" src={"https://image.tmdb.org/t/p/w185"+ actor.profile_path} />
+                        <stackLayout style="margin-right:30;" >
+                            <flexBoxLayout style="height:70; width:70;">
+                                <image  stretch="aspectFill" class="thumb img-circle"  style="width:100%; height:100%; " src={"https://image.tmdb.org/t/p/w185"+ actor.profile_path} />
                             </flexBoxLayout>
-                            <label row="1" textWrap="true" flexWrapBefore={true} style="color:white; font-size:14; margin-right:20;" text="{actor.name}" />
-                        </gridLayout>
+                            <label textAlignment="center" textWrap="true" flexWrapBefore={true} style="color:white; margin-top:8; font-size:14; width:74; " text="{actor.name}" />
+                        </stackLayout>
                     {/each}
                 </flexBoxLayout>
             </scrollView>
@@ -122,6 +121,7 @@
         color:white;
         margin-top:6;
         margin-left:4;
+
     }
 
     .fas{
@@ -129,4 +129,6 @@
         margin-top:6;
         margin-left:4;
     }
+
+    
 </style>
