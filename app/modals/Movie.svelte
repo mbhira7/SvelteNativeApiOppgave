@@ -73,7 +73,7 @@
     <scrollView>
         <flexBoxLayout class="m-y-60" style="flex-direction:column; margin:0 50 0 50;">
             <image src={"https://image.tmdb.org/t/p/w185"+ movie.poster_path} class="image img-rounded " style="margin-top:18; " stretch="aspectFill"/>
-            <gridLayout   row="1" columns="170,*" style="margin-top:8; margin-bottom:3;">
+            <gridLayout   row="1" columns="170,*" style="margin-top:10; margin-bottom:3;">
                 <label textAlignment="left" textWrap="true" row="1" col="0" class="font-weight-bold white " style="font-size:18;  " text="{movie.title}" />
                 <gridLayout col="1"  verticalAlignment="top" horizontalAlignment="right">
                     <label textAlignment="right" style="font-size:18; margin-right:25;" class="font-weight-bold  white" text="{movie.vote_average}/10"/>
