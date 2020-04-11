@@ -92,7 +92,7 @@
                 <label textWrap="true" text="{genreName} | " class="white" style="font-size:16; margin-bottom:3; "/>
             {/each}
         </flexBoxLayout>
-            <label class="white " style="font-size:16; margin-bottom:6;" text="{movie.release_date.slice(0, 4)}" />
+            <label class="white " style="font-size:16; margin-bottom:8;" text="{movie.release_date.slice(0, 4)}" />
             <label class="white" style="font-size:16;"col="0" textWrap="true" row="2" text="{movie.overview}"  lineHeight="7" />
             <label class="font-weight-bold white" text="Cast" style="margin-top:15; margin-bottom:10;"/>
             <scrollView orientation="horizontal">
