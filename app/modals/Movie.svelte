@@ -36,6 +36,7 @@
             genreNames = [...genreNames, genresList[indeks].name]    
         }
     )
+
    
     const addAndDelete = () => {
         showEmptyIcon = !showEmptyIcon
@@ -72,25 +73,26 @@
     <scrollView>
         <flexBoxLayout class="m-y-60" style="flex-direction:column; margin:0 50 0 50;">
             <image src={"https://image.tmdb.org/t/p/w185"+ movie.poster_path} class="image img-rounded " style="margin-top:18; " stretch="aspectFill"/>
-            <gridLayout  row="1" columns="180,*" style="margin-top:8;">
-                <label textAlignment="left" textWrap="true" row="1" col="0" class="font-weight-bold m-y-4 white" style="font-size:18; " text="{movie.title}" />
-                <gridLayout col="1" verticalAlignment="top" textAlignment="right">
-                    <label textAlignment="right" style="font-size:18;" class="font-weight-bold m-y-4 white" text="{movie.vote_average}/10"/>
+            <gridLayout   row="1" columns="170,*" style="margin-top:8; margin-bottom:3;">
+                <label textAlignment="left" textWrap="true" row="1" col="0" class="font-weight-bold white " style="font-size:18;  " text="{movie.title}" />
+                <gridLayout col="1"  verticalAlignment="top" horizontalAlignment="right">
+                    <label textAlignment="right" style="font-size:18; margin-right:25;" class="font-weight-bold  white" text="{movie.vote_average}/10"/>
+                     <flexBoxLayout  style="height:22; width:14; " horizontalAlignment="right" >
+                        {#if showEmptyIcon}
+                            <image on:tap={addAndDelete} src="font://&#xf02e;" style="height:100%; width:100%;" class="far" />
+                        {:else}
+                            <image on:tap={addAndDelete} src="font://&#xf02e;" style="height:100%; width:100%;" class="fas " />
+                        {/if}
+                    </flexBoxLayout>
                 </gridLayout>
+
             </gridLayout>
         <flexBoxLayout>
             {#each genreNames.slice(0,3) as genreName}
-                <label textWrap="true" text="{genreName} | " class="white m-y-2" style="font-size:16;"/>
+                <label textWrap="true" text="{genreName} | " class="white" style="font-size:16; margin-bottom:3; "/>
             {/each}
-            <flexBoxLayout style="height:30; width:18;">
-                {#if showEmptyIcon}
-                    <image on:tap={addAndDelete} src="font://&#xf02e;" style="height:100%; width:100%;" class="far" />
-                {:else}
-                    <image on:tap={addAndDelete} src="font://&#xf02e;" style="height:100%; width:100%;" class="fas" />
-                {/if}
-            </flexBoxLayout>
         </flexBoxLayout>
-            <label class="white m-y-4" style="font-size:16;" text="{movie.release_date.slice(0, 4)}" />
+            <label class="white " style="font-size:16; margin-bottom:6;" text="{movie.release_date.slice(0, 4)}" />
             <label class="white" style="font-size:16;"col="0" textWrap="true" row="2" text="{movie.overview}"  lineHeight="7" />
             <label class="font-weight-bold white" text="Cast" style="margin-top:15; margin-bottom:10;"/>
             <scrollView orientation="horizontal">
@@ -100,7 +102,7 @@
                             <flexBoxLayout style="height:70; width:70;">
                                 <image  stretch="aspectFill" class="thumb img-circle"  style="width:100%; height:100%; " src={"https://image.tmdb.org/t/p/w185"+ actor.profile_path} />
                             </flexBoxLayout>
-                            <label textAlignment="center" textWrap="true" flexWrapBefore={true} style="color:white; margin-top:8; font-size:14; width:74; " text="{actor.name}" />
+                            <label textAlignment="center" textWrap="true" flexWrapBefore={true} style="color:white; margin-top:8; font-size:14; width:72; " text="{actor.name}" />
                         </stackLayout>
                     {/each}
                 </flexBoxLayout>
@@ -119,15 +121,10 @@
 
     .far{
         color:white;
-        margin-top:6;
-        margin-left:4;
-
     }
 
     .fas{
         color:white;
-        margin-top:6;
-        margin-left:4;
     }
 
     

@@ -24,7 +24,7 @@
     <stackLayout >
         <flexBoxLayout class= "search background" >
         {#if array.length > 0}
-            <label text="{heading}" class="font-weight-bold wite"/>
+            <label text="{heading}" class="font-weight-bold wite" style="margin-left:10;"/>
         {/if}
             <scrollView orientation="horizontal">
                 <flexBoxLayout class="movies" >
@@ -55,7 +55,7 @@
    .movies{
        justify-content: flex-start;
        align-items: flex-start;
-       margin-left:-6;
+       margin-bottom:25;
    }
 
    .movie{

@@ -28,7 +28,7 @@ onMount(() => {
             <label  text="Movie Database" style="color:orange; font-size: 22; font-family: Courier, monospace;"/>
         </flexBoxLayout>
         <scrollView >
-            <stackLayout style="padding:14;">
+            <stackLayout style="padding:4;">
                 <DisplayMovies heading="New releases" genresList={genresList} array={newMovies} />
                 <DisplayMovies heading="Trending movies" genresList={genresList} array={trendingMovies} />
             </stackLayout>
@@ -39,7 +39,7 @@ onMount(() => {
 <style>
 
     .header{
-        margin-bottom:16;
+        margin-bottom:12;
         width:100%;
         height:68;
         background-color: #1a222d;
