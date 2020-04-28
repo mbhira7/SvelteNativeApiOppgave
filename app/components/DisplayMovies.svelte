@@ -1,23 +1,19 @@
 <script>
-    export let array
-    export let heading
     import {showModal} from "svelte-native"
     import Movie from "../modals/Movie.svelte"
-    export let genresList
-    const apiKey="cffa047e4f2e83b565d15715e66d2a35"
-    import { db } from '../stores/stores.js'
+    export let array
+    export let heading
 
     const viewMovie = async (movie) => {
         await showModal({
             page: Movie,
             fullscreen:true,
             props:{
-                movie:movie,
-                genresList:genresList,
-                apiKey:apiKey
+                movie:movie
             }
         })
     }
+
 </script>
 
 

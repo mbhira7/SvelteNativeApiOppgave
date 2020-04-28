@@ -1,20 +1,16 @@
 <script>
     import { onMount } from 'svelte'
-    import { db } from '../stores/stores.js'
-    export let favourites 
-    export let apiKey
     import {showModal} from "svelte-native"
+    import { db } from '../stores/stores.js'
     import Movie from "../modals/Movie.svelte"
-    export let genresList
+    export let favourites 
 
     const viewMovie = async (favourite) => {
         await showModal({
             page: Movie,
             fullscreen:true,
             props:{
-                movie:favourite,
-                apiKey:apiKey,
-                genresList:genresList
+                movie:favourite
             }
         })
     }

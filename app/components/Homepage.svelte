@@ -1,12 +1,9 @@
 <script>
     import {onMount} from "svelte"
     import DisplayMovies from "./DisplayMovies.svelte"
-    export let apiKey
-    import {getData} from "../constants/constant.js"
-    export let genresList 
+    import {getData,apiKey} from "../constants/constant.js"
     const trendingMoviesUrl = `https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=${apiKey}`
     const newMoviesUrl = `https://api.themoviedb.org/3/discover/movie?primary_release_year=2020&api_key=${apiKey}`
-
     let trendingMovies = []
     let newMovies = []
     let results = []
@@ -29,8 +26,8 @@ onMount(() => {
         </flexBoxLayout>
         <scrollView >
             <stackLayout style="padding:4;">
-                <DisplayMovies heading="New releases" genresList={genresList} array={newMovies} />
-                <DisplayMovies heading="Trending movies" genresList={genresList} array={trendingMovies} />
+                <DisplayMovies heading="New releases" array={newMovies} />
+                <DisplayMovies heading="Trending movies" array={trendingMovies} />
             </stackLayout>
         </scrollView>
     </stackLayout>  
