@@ -5,7 +5,7 @@
     import { onMount } from 'svelte'
     export let movie
     const appSettings = require("tns-core-modules/application-settings")
-    const movies = $db.collection($uniqueKey)
+    const movies = $db.collection(`${$uniqueKey}`)
     const checkMovie = movies.doc(`${movie.id}`)
     const casting = `https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${apiKey}`
     let genreNames = []

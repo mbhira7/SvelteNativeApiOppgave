@@ -52,7 +52,7 @@
         </flexBoxLayout>
          <stackLayout>
             {#if !showGenres}
-                <searchBar  on:textChange={titleSearch} style=" height:45; width:100%;  margin-bottom:18;" hint="Search for movies" bind:text={searchValue}/>
+                <searchBar on:textChange={titleSearch} bind:text={searchValue} style=" height:45; width:100%;  margin-bottom:18;" hint="Search for movies" />
             {/if}    
         </stackLayout>
         {#if showGenres}

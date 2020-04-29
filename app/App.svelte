@@ -1,10 +1,10 @@
 <script>
+    import { onMount } from 'svelte'
+    import { db,uniqueKey } from './stores/stores.js'
+    import {getData} from "./constants/constant.js"
     import Homepage from "./components/Homepage.svelte"
     import Search from "./components/Search.svelte"
     import Watchlist from "./components/Watchlist.svelte"
-    import { db,uniqueKey } from './stores/stores.js'
-    import { onMount } from 'svelte'
-    import {getData,generateKey} from "./constants/constant.js"
     const firebase = require("nativescript-plugin-firebase/app")
     const appSettings = require("tns-core-modules/application-settings")
     let selectedTab = 0
