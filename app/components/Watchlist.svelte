@@ -1,7 +1,7 @@
 <script>
     import { onMount } from 'svelte'
     import {showModal} from "svelte-native"
-    import { db,uniqueKey } from '../stores/stores.js'
+    import { db} from '../stores/stores.js'
     import Movie from "../modals/Movie.svelte"
     export let favourites 
     let searchValue = ""
