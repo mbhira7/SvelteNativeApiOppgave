@@ -2,28 +2,13 @@
     import Homepage from "./components/Homepage.svelte"
     import Search from "./components/Search.svelte"
     import Watchlist from "./components/Watchlist.svelte"
-    import { db } from './stores/stores.js'
+    import { db,uniqueKey } from './stores/stores.js'
     import { onMount } from 'svelte'
-    import {getData} from "./constants/constant.js"
-
-    const apiKey = "cffa047e4f2e83b565d15715e66d2a35"
+    import {getData,generateKey} from "./constants/constant.js"
+    const firebase = require("nativescript-plugin-firebase/app")
+    const appSettings = require("tns-core-modules/application-settings")
     let selectedTab = 0
     let favourites = []
-    const genresList= [{"id":28,"name":"Action"},
-    {"id":12,"name":"Adventure"},{"id":16,"name":"Animation"},{"id":35,"name":"Comedy"},
-    {"id":80,"name":"Crime"},{"id":99,"name":"Documentary"},{"id":18,"name":"Drama"},
-    {"id":10751,"name":"Family"},{"id":14,"name":"Fantasy"},{"id":36,"name":"History"},
-    {"id":27,"name":"Horror"},{"id":10402,"name":"Music"},{"id":9648,"name":"Mystery"},
-    {"id":10749,"name":"Romance"},{"id":878,"name":"Sci-Fi"},{"id":10770,"name":"TV Movie"},
-    {"id":53,"name":"Thriller"},{"id":10752,"name":"War"},{"id":37,"name":"Western"}]
-
-
-    for(let i=0; i<genresList.length; i++) {
-        genresList[i].clicked = false
-    }
-
-
-const firebase = require("nativescript-plugin-firebase/app")
     
 const initFirebase = () => {
     return new Promise(resolve => {
@@ -43,15 +28,16 @@ const initFirebase = () => {
 
 onMount( async () => {
     console.log('App mounts..')
+    
+    if(appSettings.getString("unique-key")){
+        uniqueKey.set(appSettings.getString("unique-key"))
+    }
     $db = await initFirebase()
-    const movies = $db.collection("movies")
+    const movies = $db.collection(`${$uniqueKey}`)
     const showFavourites = movies.onSnapshot(snapshot => {
         favourites=[]
         snapshot.forEach( favourite => {
-             favourites = [...favourites, {id:favourite.id, ...favourite.data()}]
-            //getData(`https://api.themoviedb.org/3/movie/${favourite.id}?api_key=${apiKey}`)
-                //.then((res => favourites = [...favourites,res]))
-
+            favourites = [...favourites, {id:favourite.id, ...favourite.data()}]
         })
     })
 })
@@ -81,15 +67,15 @@ onMount( async () => {
         </tabStrip>
 
         <tabContentItem >
-            <Homepage apiKey={apiKey} genresList={genresList}/>
+            <Homepage />
         </tabContentItem>
         
         <tabContentItem>
-            <Search apiKey={apiKey}  genresList={genresList}/>
+            <Search />
         </tabContentItem>
 
         <tabContentItem>
-            <Watchlist apiKey={apiKey} favourites={favourites}  genresList={genresList}/>
+            <Watchlist favourites={favourites} />
         </tabContentItem>
     </tabs>
     </stackLayout>

@@ -1,25 +1,24 @@
 <script>
     import {closeModal} from "svelte-native"
-    import { db } from '../stores/stores.js'
+    import {getData,apiKey} from "../constants/constant.js"
+    import { db,uniqueKey,genresList } from '../stores/stores.js'
     import { onMount } from 'svelte'
     export let movie
-    export let genresList
-    import {getData} from "../constants/constant.js"
-    export let apiKey
+    const appSettings = require("tns-core-modules/application-settings")
+    const movies = $db.collection($uniqueKey)
+    const checkMovie = movies.doc(`${movie.id}`)
+    const casting = `https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${apiKey}`
     let genreNames = []
     let showEmptyIcon = true
     let actors = []
-    const movies = $db.collection("movies")
-    const checkMovie = movies.doc(`${movie.id}`)
-    const casting = `https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${apiKey}`
 
-   
     onMount(() => {
+        
     getData(casting)
         .then(res => actors = res.cast)
 
     })
-   
+
     checkMovie.onSnapshot(doc => {
         if (doc.exists) {
             showEmptyIcon = false
@@ -29,16 +28,16 @@
         }
     })
 
-  
     movie.genre_ids.forEach(
         movieId => {
-            const indeks = genresList.findIndex(genre => genre.id === movieId)
-            genreNames = [...genreNames, genresList[indeks].name]    
+            const indeks = $genresList.findIndex(genre => genre.id === movieId)
+            genreNames = [...genreNames, $genresList[indeks].name]    
         }
     )
 
    
     const addAndDelete = () => {
+        appSettings.setString("unique-key", $uniqueKey)
         showEmptyIcon = !showEmptyIcon
 
         if(!showEmptyIcon) {
