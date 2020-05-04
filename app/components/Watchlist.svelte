@@ -5,10 +5,7 @@
     import Movie from "../modals/Movie.svelte"
     export let favourites 
     let searchValue = ""
-
-    const titleSearch = () => {
-        favourites = favourites.filter(favourite => favourite.title.toLowerCase().includes(searchValue.toLowerCase()))
-    }
+    $:filtrerte = favourites.filter(favourite => favourite.title.toLowerCase().includes(searchValue.toLowerCase()))
 
     const viewMovie = async (favourite) => {
         await showModal({
@@ -25,10 +22,14 @@
 <page>
     <stackLayout class="background" style="padding:16;">
         <label style="margin-bottom:18; margin-top:12;" class="h2 white text-center" text="Watchlist" />
-        <searchBar on:textChange={titleSearch} bind:text={searchValue} style=" height:45; width:100%;  margin-bottom:15;" hint="Search in your favourites" />
-      <scrollView>
+        {#if favourites.length > 0}
+            <searchBar bind:text={searchValue}  style=" height:45; width:100%;  margin-bottom:15;" hint="Search in your favourites" />
+        {:else}
+            <label textAlignment="center" text="Add your favourites first!" class="white" />
+        {/if}
+      <scrollView scrollBarIndicatorVisible={false}>
         <flexBoxLayout class="movies" >
-            {#each favourites as favourite}
+            {#each filtrerte as favourite}
             <gridLayout class="border" on:tap={() => viewMovie(favourite)} columns="90,*" rows="140">
                 <image  col="0" row="0" src={"https://image.tmdb.org/t/p/w185"+ favourite.poster_path}  class="img-rounded" />
                 <stackLayout col="1" row="1" style="margin-left:10;">
@@ -36,7 +37,7 @@
                     <label text="{favourite.release_date.slice(0, 4)}" style="color:white; font-size:15; margin-top:5; " />
                      <flexBoxLayout style="flex-direction:row;">
                     {#each favourite.genre_names.slice(0,3) as genre}
-                       <label text="{genre} | " style="color:white; margin-bottom:6;" />
+                       <label text="{genre} " style="color:white; margin-bottom:6;" />
                     {/each}
                     </flexBoxLayout>
                     <flexBoxLayout style="justify-content:flex-start;">
@@ -57,8 +58,7 @@
 <style>
    
     .border{
-        border-bottom-color: #181e25;
-        border-bottom-width: 3;
+        
         padding:10 0 10 0;
     }
     

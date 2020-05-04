@@ -47,20 +47,20 @@ onMount( async () => {
 <page actionBarHidden={true}>
     <stackLayout >
     <tabs row="0" bind:selectedIndex={selectedTab} tabsPosition="bottom"  style="padding:0; margin:0;">
-        <tabStrip backgroundColor="#1a222d" height="58" class="tabstrip-label">
+        <tabStrip backgroundColor="rgb(30, 50, 68)" class="tabstrip-label">
             <tabStripItem >
                 <image src="font://&#xf008;" class="fas" />
-                <label class="white" text="Discover"/>
+            
                 
             </tabStripItem >
 
             <tabStripItem >
-                <label class="white" text="Search" />
+            
                 <image src="font://&#xf002;" class="fas" />
             </tabStripItem>
 
             <tabStripItem >
-                <label class="white" text="Watchlist"/>
+               
                 <image src="font://&#xf02e;" class="far" />
             </tabStripItem>
 
@@ -90,7 +90,7 @@ onMount( async () => {
        font-size:10;
        padding:0;
        margin:0;
-       height:8%;
+     
    }
 
    .fas{

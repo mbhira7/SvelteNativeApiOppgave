@@ -1,8 +1,8 @@
 <script>
+    import { onMount } from 'svelte'
     import {closeModal} from "svelte-native"
     import {getData,apiKey} from "../constants/constant.js"
     import { db,uniqueKey,genresList } from '../stores/stores.js'
-    import { onMount } from 'svelte'
     export let movie
     const appSettings = require("tns-core-modules/application-settings")
     const movies = $db.collection(`${$uniqueKey}`)
@@ -12,11 +12,10 @@
     let showEmptyIcon = true
     let actors = []
 
-    onMount(() => {
+    onMount(async () => {
         
-    getData(casting)
+    await getData(casting)
         .then(res => actors = res.cast)
-
     })
 
     checkMovie.onSnapshot(doc => {
@@ -29,12 +28,16 @@
     })
 
     movie.genre_ids.forEach(
-        movieId => {
-            const indeks = $genresList.findIndex(genre => genre.id === movieId)
-            genreNames = [...genreNames, $genresList[indeks].name]    
+        genreId => {
+            const indeks = $genresList.findIndex(genre => genre.id === genreId)
+            genreNames = [...genreNames, $genresList[indeks].name]
         }
     )
 
+
+    for(let i=1; i<genreNames.length; i++){
+        genreNames[i] = "| " + genreNames[i];
+    }
    
     const addAndDelete = () => {
         appSettings.setString("unique-key", $uniqueKey)
@@ -59,8 +62,8 @@
    
 </script>
 
-<frame>
-    <page>
+<frame >
+    <page >
      <actionBar title="{movie.title}">
         <actionItem on:tap={ () => closeModal() }
             android.systemIcon = "ic_menu_close_clear_cancel"
@@ -69,7 +72,7 @@
             ios.position="right"
         />
         </actionBar>
-    <scrollView>
+    <scrollView scrollBarIndicatorVisible={false}>
         <flexBoxLayout class="m-y-60" style="flex-direction:column; margin:0 50 0 50;">
             <image src={"https://image.tmdb.org/t/p/w185"+ movie.poster_path} class="image img-rounded " style="margin-top:18; " stretch="aspectFill"/>
             <gridLayout   row="1" columns="170,*" style="margin-top:10; margin-bottom:3;">
@@ -88,13 +91,13 @@
             </gridLayout>
         <flexBoxLayout>
             {#each genreNames.slice(0,3) as genreName}
-                <label textWrap="true" text="{genreName} | " class="white" style="font-size:16; margin-bottom:3; "/>
+                <label textWrap="true" text="{genreName} " class="white" style="font-size:16; margin-bottom:3; "/>
             {/each}
         </flexBoxLayout>
             <label class="white " style="font-size:16; margin-bottom:8;" text="{movie.release_date.slice(0, 4)}" />
             <label class="white" style="font-size:16;"col="0" textWrap="true" row="2" text="{movie.overview}"  lineHeight="7" />
             <label class="font-weight-bold white" text="Cast" style="margin-top:15; margin-bottom:10;"/>
-            <scrollView orientation="horizontal">
+            <scrollView orientation="horizontal" scrollBarIndicatorVisible={false}>
                 <flexBoxLayout >
                     {#each actors.slice(0,5) as actor}
                         <stackLayout style="margin-right:30;" >
@@ -126,5 +129,4 @@
         color:white;
     }
 
-    
 </style>

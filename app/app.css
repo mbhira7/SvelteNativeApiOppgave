@@ -15,7 +15,7 @@ The imported CSS rules must precede all other types of rules.
 
 
 .background{
-   background-color: #101822;
+   background-image: linear-gradient(rgb(190, 122, 117),rgb(30, 50, 68));
 }
 
 .white{
@@ -23,5 +23,22 @@ The imported CSS rules must precede all other types of rules.
 }
 
 page{
-    background-color: #101822;
+    background-image: linear-gradient(rgb(190, 122, 117),rgb(30, 50, 68));
+}
+
+.genre-div{
+    width:auto;
+    height:auto;
+    margin-bottom:15;
+    margin-right:10;
+    border-radius:16;
+    padding:6;
+}
+
+.genre-label{
+    font-size:12;
+}
+
+.centerText{
+    text-align: center;
 }

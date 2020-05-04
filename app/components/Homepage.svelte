@@ -22,10 +22,10 @@ onMount(() => {
 <page >
     <stackLayout class="background">
         <flexBoxLayout class="header" androidElevation="80">
-            <label  text="Movie Database" style="color:orange; font-size: 22; font-family: Courier, monospace;"/>
+            <label text="Movie Database" style="color:white; font-size: 22; font-family: Courier, monospace;"/>
         </flexBoxLayout>
         <scrollView >
-            <stackLayout style="padding:4;">
+            <stackLayout style="padding:6;">
                 <DisplayMovies heading="New releases" array={newMovies} />
                 <DisplayMovies heading="Trending movies" array={trendingMovies} />
             </stackLayout>
@@ -39,7 +39,6 @@ onMount(() => {
         margin-bottom:12;
         width:100%;
         height:68;
-        background-color: #1a222d;
         justify-content: center;
         align-items: center;
     }

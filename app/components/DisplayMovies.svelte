@@ -3,13 +3,15 @@
     import Movie from "../modals/Movie.svelte"
     export let array
     export let heading
+    export let chosenGenres
 
     const viewMovie = async (movie) => {
         await showModal({
             page: Movie,
             fullscreen:true,
             props:{
-                movie:movie
+                movie:movie,
+                chosenGenres:chosenGenres
             }
         })
     }
@@ -18,16 +20,16 @@
 
 
     <stackLayout >
-        <flexBoxLayout class= "search background" >
+        <flexBoxLayout class= "search " >
         {#if array.length > 0}
-            <label text="{heading}" class="font-weight-bold wite" style="margin-left:10;"/>
+            <label text="{heading}" class="font-weight-bold wite" />
         {/if}
-            <scrollView orientation="horizontal">
+            <scrollView orientation="horizontal" scrollBarIndicatorVisible={false}>
                 <flexBoxLayout class="movies" >
                     {#if array.length >= 1}   
                         {#each array as movie}
                             <gridLayout on:tap={() => viewMovie(movie)} class="movie" rows="130,auto" columns="105" >
-                                <image  col="0" row="0"  src={"https://image.tmdb.org/t/p/w185"+ movie.poster_path} class="img-rounded" />
+                                <image  col="0" row="0"  src={"https://image.tmdb.org/t/p/w185"+ movie.poster_path} style="border-radius:18;" />
                                 <flexBoxLayout col="1" class="rating-box text-center"  verticalAlignment="top" horizontalAlignment="right">
                                     <label  class="text-center white" style="font-size:14;" text="{movie.vote_average}" />
                                 </flexBoxLayout>
@@ -61,8 +63,7 @@
    }
 
    .wite{
-        margin-top:5; 
-        margin-bottom:12;
+       margin:5 0 12 9;
         color:rgb(255, 255, 255);
         font-size:17;
    }
