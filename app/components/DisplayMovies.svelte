@@ -3,15 +3,13 @@
     import Movie from "../modals/Movie.svelte"
     export let array
     export let heading
-    export let chosenGenres
 
     const viewMovie = async (movie) => {
         await showModal({
             page: Movie,
             fullscreen:true,
             props:{
-                movie:movie,
-                chosenGenres:chosenGenres
+                movie:movie
             }
         })
     }

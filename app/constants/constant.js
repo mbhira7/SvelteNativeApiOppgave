@@ -20,3 +20,12 @@ export const generateKey = () => {
 }
 
 export const apiKey = "cffa047e4f2e83b565d15715e66d2a35"
+
+
+export const createList = (array) => {
+    for(let i=0; i<array.length; i++) {
+        array[i].clicked = false
+    }
+    return array
+}
+

@@ -6,7 +6,6 @@
     const newMoviesUrl = `https://api.themoviedb.org/3/discover/movie?primary_release_year=2020&api_key=${apiKey}`
     let trendingMovies = []
     let newMovies = []
-    let results = []
 
 onMount(() => {
     getData(trendingMoviesUrl)

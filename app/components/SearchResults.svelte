@@ -3,15 +3,13 @@
     import Movie from "../modals/Movie.svelte"
     export let array
     export let heading
-    export let chosenGenres
 
     const viewMovie = async (movie) => {
         await showModal({
             page: Movie,
             fullscreen:true,
             props:{
-                movie:movie,
-                chosenGenres:chosenGenres
+                movie:movie
             }
         })
     }
@@ -21,7 +19,7 @@
 
     <stackLayout >
         <scrollView scrollBarIndicatorVisible={false}>
-            <stackLayout class="movies" >
+            <stackLayout >
                 <label text="{heading}" class="h2 white centerText" />
                 {#if array.length >= 1}   
                     {#each array as movie}

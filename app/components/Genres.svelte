@@ -1,33 +1,28 @@
 
 <script>
 import {genresList,chosenGenres,choiceValue} from "../stores/stores.js"
-import {getData,apiKey} from "../constants/constant.js"
-let genresResults = []
-let str
-
-for(let i=0; i<$genresList.length; i++) {
-    $genresList[i].clicked = false
-}
+let verdi
+let maxValueMessage 
 
 const genreSearch = (clicked, id, i) => {
+    maxValueMessage = ""
     const indeks = $chosenGenres.findIndex(g => g === id)
-    $genresList[i].clicked = !clicked
 
+    if($chosenGenres.length === 3 && $genresList[i].clicked === false ) {
+        maxValueMessage = "Maximum 3 genres"
+        return
+    }
+    $genresList[i].clicked = !clicked
 
     if($genresList[i].clicked === true && ! $chosenGenres.includes($genresList[i].id)) {
         $chosenGenres = [...$chosenGenres, $genresList[i].id].slice(0,3)
     }
 
-    if($genresList[i].clicked === false && $chosenGenres.includes($genresList[i].id)) {
+    else{
         $chosenGenres.splice(indeks,1)
     }
 
-    
-    console.log($chosenGenres);
-
-
 }
-
 
 </script>
 
@@ -49,6 +44,7 @@ const genreSearch = (clicked, id, i) => {
         {/if}
     {/each}
 </wrapLayout>
+<label text="{maxValueMessage}" class="white font-weight-bold"/>
 </stackLayout>
 
 

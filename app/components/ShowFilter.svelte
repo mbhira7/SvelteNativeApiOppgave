@@ -1,6 +1,4 @@
 <script>
-    import {genresList,showFilterSection} from "../stores/stores.js"
-    import {getData,apiKey} from "../constants/constant.js"
     import Genres from "./Genres.svelte"
     import YearAndLanguage from "./YearAndLanguage.svelte"
     export let heading
@@ -9,13 +7,9 @@
     export let filterGenres
     export let filterLanguages
     export let filterYear
-    let showSection = false
     let signText = "+"
     let plussEnabled = true
-    let genresResults = []
-    let chosenGenres = []
-
-
+   
     const toggle1 = () => {
         plussEnabled = !plussEnabled
         if(plussEnabled){
@@ -25,8 +19,6 @@
             signText="-"
         }
     }
-
-
 
 </script>
 

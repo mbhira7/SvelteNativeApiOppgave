@@ -8,15 +8,22 @@
     const movies = $db.collection(`${$uniqueKey}`)
     const checkMovie = movies.doc(`${movie.id}`)
     const casting = `https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${apiKey}`
+    const movieDetails = `https://api.themoviedb.org/3/movie/${movie.id}?api_key=${apiKey}`
     let genreNames = []
     let showEmptyIcon = true
     let actors = []
+    let moviesD = []
+    //let moviesDetail = []
 
-    onMount(async () => {
-        
-    await getData(casting)
-        .then(res => actors = res.cast)
+    onMount( () => {
+        getData(casting)
+            .then(res => actors = res.cast)
+        getData(movieDetails)
+            .then(res => moviesD = [...moviesD,res])
+           
     })
+
+
 
     checkMovie.onSnapshot(doc => {
         if (doc.exists) {
@@ -72,10 +79,10 @@
             ios.position="right"
         />
         </actionBar>
-    <scrollView scrollBarIndicatorVisible={false}>
+     <scrollView scrollBarIndicatorVisible={false}>
         <flexBoxLayout class="m-y-60" style="flex-direction:column; margin:0 50 0 50;">
             <image src={"https://image.tmdb.org/t/p/w185"+ movie.poster_path} class="image img-rounded " style="margin-top:18; " stretch="aspectFill"/>
-            <gridLayout   row="1" columns="170,*" style="margin-top:10; margin-bottom:3;">
+            <gridLayout   row="1" columns="170,*" style="margin-top:5; margin-bottom:3;">
                 <label textAlignment="left" textWrap="true" row="1" col="0" class="font-weight-bold white " style="font-size:18;  " text="{movie.title}" />
                 <gridLayout col="1"  verticalAlignment="top" horizontalAlignment="right">
                     <label textAlignment="right" style="font-size:18; margin-right:25;" class="font-weight-bold  white" text="{movie.vote_average}/10"/>
@@ -99,6 +106,7 @@
             <label class="font-weight-bold white" text="Cast" style="margin-top:15; margin-bottom:10;"/>
             <scrollView orientation="horizontal" scrollBarIndicatorVisible={false}>
                 <flexBoxLayout >
+                {#if actors}
                     {#each actors.slice(0,5) as actor}
                         <stackLayout style="margin-right:30;" >
                             <flexBoxLayout style="height:70; width:70;">
@@ -107,6 +115,9 @@
                             <label textAlignment="center" textWrap="true" flexWrapBefore={true} style="color:white; margin-top:8; font-size:14; width:72; " text="{actor.name}" />
                         </stackLayout>
                     {/each}
+                {:else}
+                    <label text="Sorry, no cast available" class="white"/>
+                {/if}
                 </flexBoxLayout>
             </scrollView>
         </flexBoxLayout>
