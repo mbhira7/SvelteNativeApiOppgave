@@ -29,6 +29,8 @@
             .then(res => personer = res.crew)
         await getData(movieDetails)
             .then(res => moviesD = [...moviesD,res])
+
+        tester()
            
     })
 
@@ -82,7 +84,15 @@
         let restMinutes = Math.round(minutes);
         return restHours + " hr " + restMinutes + " min";
     }
-    
+
+    const tester = () => {
+        crew.map(c => {
+            if(c.job === "Original Music Composer"){
+                c.job = "Music"
+            }
+        })
+    }
+
 </script>
 
 <frame >
