@@ -2,102 +2,83 @@
     import {onMount} from "svelte"
     import {showModal} from "svelte-native"
     import {getData,apiKey} from "../constants/constant.js"
-    import {choiceValue,showFilterSection,chosenGenres,languageValue,decadeStartValue,decadeEndValue} from "../stores/stores.js"
+    import {showActorsList,chosenActor,filterChoiceValue,searchChoiceValue,showFilterBox,chosenGenres,languageValue,decadeStartValue,decadeEndValue} from "../stores/stores.js"
     import DisplayMovies from "./DisplayMovies.svelte"
     import SearchResults from "./SearchResults.svelte"
+    import ScrollViewCastCrew from "./ScrollViewCastCrew.svelte"
     import ShowFilter from "./ShowFilter.svelte"
     let searchResults = []
-    let searchResults2 = []
     let filterResults = []
-    let searchValue = ""
-    let showGenres
-    let prom 
-    let prom2
-    let prom3
+    let showFilterPage 
     let title = "Browse"
-    let message
+    let noResultsMessage
     let inputMessage
     let inputValue
-    let actorID
-    let prom4 = []
-   
-   const titleSearch = async () => {
-       prom4 = []
-       if(searchValue.length >= 1) {
-           if($choiceValue === 0) {
-               prom = await getData(`https://api.themoviedb.org/3/search/movie?query=${encodeURI(searchValue)}&api_key=${apiKey}`)
-               searchResults = prom.results
-           }
-           if($choiceValue === 1){
-                prom = await getData(`https://api.themoviedb.org/3/search/person?query=${encodeURI(searchValue)}&api_key=${apiKey}`)
-                prom2 = await prom.results.filter (search => {
-                    //search.name === searchValue
-                    return search.known_for_department === "Acting"
-                    //actorID = search.id
-                })
-                prom2.forEach(person => {
-                    actorID = person.id
-                    prom3 = getData(`https://api.themoviedb.org/3/person/${encodeURI(actorID)}/combined_credits?api_key=${apiKey}`)
-                    .then((obj)=>{
-                        //console.log(obj.cast)
-                        prom4 = obj.cast
-                    })
-                    //searchResults = prom3.cast
-                    
-                })
-                //console.log(prom4)
-                //actorID = prom2[0].id
-                //prom3 = await getData(`https://api.themoviedb.org/3/person/${encodeURI(actorID)}/combined_credits?api_key=${apiKey}`)
-                
-                
-           }
-                
-           /*else{
-               prom2 = await getData(`https://api.themoviedb.org/3/search/person?query=${encodeURI(searchValue)}&api_key=${apiKey}`)
-                actorID =  await prom2.results[0].id
-                prom = await getData(`https://api.themoviedb.org/3/person/${encodeURI(actorID)}/combined_credits?api_key=${apiKey}`)
-                searchResults = prom.crew.filter(search => search.job === "Director")
-           }*/
-          
-            //prom3 = await getData(`https://api.themoviedb.org/3/person/${encodeURI(actorID)}/movie_credits?api_key=cffa047e4f2e83b565d15715e66d2a35`)
-            
-       }
-       else{
-           searchResults = ""
-           message = ""
-           actorID = ""
-        }
-        if(searchValue.length > 1 && searchResults.length === 0) {
-           
-       }
-    }
+    let searchValue
+    $:placeholderText = $searchChoiceValue === 0 ? "title" : "actor"
+    const topRatedMoviesUrl = `https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}`
+    let topRatedMovies = []
+    let personer = []
+    let prom
+    $:actors = personer.filter(person => person.known_for_department === "Acting")
+    $:directors = personer.filter(person => person.known_for_department === "Directing")
     
+    onMount(async () => {
+        await getData(topRatedMoviesUrl)
+            .then(res => topRatedMovies = res.results)
+    })
+
+
+   const titleSearch = async () => {
+       noResultsMessage =""
+       if(searchValue.length === 0) { 
+            searchResults = ""
+            noResultsMessage = ""
+            return 
+        }
+
+        if($searchChoiceValue === 0) {
+            prom = await getData(`https://api.themoviedb.org/3/search/movie?query=${encodeURI(searchValue)}&api_key=${apiKey}`)
+            searchResults = prom.results
+        }
+           
+        else{
+            await getData(`https://api.themoviedb.org/3/search/person?query=${encodeURI(searchValue)}&api_key=${apiKey}`)
+            .then(res => personer = res.results)
+            $showActorsList = true
+        }
+
+        if(searchValue.length > 1 && searchResults.length === 0) {
+           noResultsMessage = "Sorry, no results"
+        }
+    
+    }
 
     const toggle1 = () => {
-        showGenres = false
+        showFilterPage = false
         title="Search"
-        $showFilterSection = false
+        $showFilterBox = false
         filterResults = ""
-        message = ""
+        noResultsMessage = ""
         inputMessage = ""
     }
 
     const toggle2 = () => {
-        showGenres = true
+        showFilterPage = true
         title = "Filter"
-        $showFilterSection = true
+        $showFilterBox = true
         filterResults = ""
-        message = ""
+        noResultsMessage = ""
         inputMessage = ""
     }
 
     const filterSearch = async () => {
-        inputValue = $choiceValue === 1 ? $chosenGenres : $chosenGenres.join("|")
+        inputValue = $filterChoiceValue === 1 ? $chosenGenres : $chosenGenres.join("|")
 
         if($languageValue != "" || $chosenGenres.length >= 1 || $decadeEndValue != "" | $decadeStartValue != "" ) {
             await getData(`https://api.themoviedb.org/3/discover/movie?with_original_language=${$languageValue}&with_genres=${encodeURI(inputValue)}&primary_release_date.gte=${$decadeStartValue}&primary_release_date.lte=${$decadeEndValue}&api_key=${apiKey}`)
                 .then(res => filterResults = res.results)
-            message = ""
+            noResultsMessage = ""
         }
         
         else{
@@ -105,15 +86,14 @@
             filterResults = ""
         }
 
-         if(($languageValue != "" || $chosenGenres.length >= 1 || $decadeEndValue != "" | $decadeStartValue != "") && filterResults.length < 1 ) {
-             message = "No results"
-             $showFilterSection = false
-         }
-
-        if(filterResults.length >= 1) {
-            $showFilterSection = false
+        if(($languageValue != "" || $chosenGenres.length >= 1 || $decadeEndValue != "" | $decadeStartValue != "") && filterResults.length < 1 ) {
+            noResultsMessage = "Sorry, no results"
+            $showFilterBox = false
         }
 
+        if(filterResults.length >= 1) {
+            $showFilterBox = false
+        }
     }
 
 </script>
@@ -131,34 +111,45 @@
                 </stackLayout>
             </flexBoxLayout>
         </stackLayout>
-         <stackLayout>
-            {#if showGenres === false}
-                <segmentedBar horizontalAlignment="center"  width="200" height="30" selectedBackgroundColor="pink" bind:selectedIndex={$choiceValue} style="margin-bottom:15;  margin-left:0; font-size: 14; color:black;">
+        <stackLayout >
+            {#if showFilterPage === false}
+                <segmentedBar horizontalAlignment="center" width="auto" height="30" selectedBackgroundColor="pink" bind:selectedIndex={$searchChoiceValue} style="margin-bottom:15;  margin-left:0; font-size: 14; color:black;">
                     <segmentedBarItem title="Title"  />
                     <segmentedBarItem title="Actor" />
                     <segmentedBarItem title="Director" />
                 </segmentedBar>
-                <searchBar on:textChange={titleSearch} bind:text={searchValue} style=" height:45; width:100%;  margin-bottom:18;" hint="Search by title" />
+                <searchBar on:textChange={titleSearch} borderRadius="50" bind:text={searchValue} style=" height:45; width:100%;  margin-bottom:18;" hint="Search by {placeholderText}" />
             {/if}   
         </stackLayout>
-        {#if showGenres === true && $showFilterSection===true}
-        <scrollView scrollBarIndicatorVisible={false}>
-            <stackLayout class="wrapper">
-                <label text="Filter" class="white font-weight-bold" style="font-size:19; margin-bottom:4;"/>
-                <gridLayout rows="auto,auto,auto">
-                    <ShowFilter filterGenres={true} heading="Genres" rowNumber=0/>
-                    <ShowFilter filterLanguages={true} heading="Language" rowNumber=1/>
-                    <ShowFilter filterYear={true} heading="Year of release" noBorder={true} rowNumber=2/>
-                </gridLayout>
-                <button on:tap={filterSearch} class="button white" text="Set filter" />
-                <label text="{inputMessage}" class="white centerText inputMessage" />
-            </stackLayout>
-        </scrollView>
-         {/if}
-         {#if showGenres === true}
-            <SearchResults heading={message} array={filterResults } /> 
-        {:else}
-            <SearchResults array={prom4} heading={message}/> 
+        {#if showFilterPage && $showFilterBox}
+            <scrollView scrollBarIndicatorVisible={false}>
+                <stackLayout class="wrapper">
+                    <label text="Filter" class="white font-weight-bold" style="font-size:19; margin-bottom:4;"/>
+                    <gridLayout rows="auto,auto,auto">
+                        <ShowFilter filterGenres={true} heading="Genres" rowNumber=0/>
+                        <ShowFilter filterLanguages={true} heading="Language" rowNumber=1/>
+                        <ShowFilter filterYear={true} heading="Year of release" noBorder={true} rowNumber=2/>
+                    </gridLayout>
+                    <button on:tap={filterSearch} class="button white" text="Set filter" />
+                    <label text="{inputMessage}" class="white centerText inputMessage" />
+                </stackLayout>
+            </scrollView>
+        {/if}
+
+        {#if showFilterPage }
+            <SearchResults heading={noResultsMessage} array={filterResults } /> 
+        {/if}
+        {#if !showFilterPage && $searchChoiceValue === 0}
+            <SearchResults heading={noResultsMessage} array={searchResults } /> 
+        {/if}
+        {#if !showFilterPage && $searchChoiceValue === 1 && $showActorsList}
+            <ScrollViewCastCrew array={actors} useFunction={true}/>
+        {/if}
+        {#if !showFilterPage && $searchChoiceValue === 2 && $showActorsList}
+            <ScrollViewCastCrew array={directors} useFunction={true} director={true}/>
+        {/if}
+        {#if !showFilterPage && ($searchChoiceValue === 1 | $searchChoiceValue === 2)}
+            <SearchResults arrayFromStore={true}/>
         {/if}
     </stackLayout>
 </page>
@@ -169,6 +160,11 @@
         background-image: linear-gradient(rgb(190, 122, 117), rgb(41, 67, 91));
         width:100%;
         height: 100%;
+   }
+
+   .tester{
+        height:100;
+        background-size:cover;
    }
     
     .fas{

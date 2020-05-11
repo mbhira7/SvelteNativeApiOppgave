@@ -1,4 +1,4 @@
-import { writable, readable } from 'svelte/store'
+import { writable} from 'svelte/store'
 import {generateKey,createList} from "../constants/constant.js"
 let genres = [{"id":28,"name":"Action"}
     ,{"id":12,"name":"Adventure"},{"id":16,"name":"Animation"},{"id":35,"name":"Comedy"}
@@ -23,9 +23,13 @@ export const genresList= writable(createList(genres))
 export const languagesList= writable(createList(languages))
 export const decadesList = writable(createList(decades))
 export const chosenGenres = writable([])
-export const showFilterSection = writable(true)
+export const showFilterBox = writable(true)
 export const languageValue = writable("")
 export const decadeStartValue = writable("")
 export const decadeEndValue = writable("")
-export const choiceValue = writable(0)
-export const displayMovieResults = writable(true)
+export const filterChoiceValue = writable(0)
+export const searchChoiceValue = writable(0)
+export const chosenActor = writable("")
+export const showActorsList = writable(true)
+export const searchValue = writable("")
+export const moviesByActor = writable([])

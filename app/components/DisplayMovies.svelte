@@ -19,19 +19,19 @@
 
     <stackLayout >
         <flexBoxLayout class= "search " >
-        {#if array.length > 0}
-            <label text="{heading}" class="font-weight-bold wite" />
-        {/if}
+            {#if array.length > 0}
+                <label text="{heading}" class="font-weight-bold wite" />
+            {/if}
             <scrollView orientation="horizontal" scrollBarIndicatorVisible={false}>
                 <flexBoxLayout class="movies" >
                     {#if array.length >= 1}   
                         {#each array as movie}
                             <gridLayout on:tap={() => viewMovie(movie)} class="movie" rows="130,auto" columns="105" >
                                 <image  col="0" row="0"  src={"https://image.tmdb.org/t/p/w185"+ movie.poster_path} style="border-radius:18;" />
-                                <flexBoxLayout col="1" class="rating-box text-center"  verticalAlignment="top" horizontalAlignment="right">
+                                <flexBoxLayout col="1" class="rating-box text-center" style="margin-right:9;" verticalAlignment="top" horizontalAlignment="right">
                                     <label  class="text-center white" style="font-size:14;" text="{movie.vote_average}" />
                                 </flexBoxLayout>
-                                <label row="1"  style="color:white; padding:10; font-size:14;" text="{movie.title}" />
+                                <label row="1" class="white font-size-14" style="padding:10;" text="{movie.title}" />
                             </gridLayout>
                         {:else}
                             <activityIndicator busy={true} />
@@ -72,14 +72,5 @@
         align-items: flex-start;
    }
 
-   .rating-box{
-        margin-right:9;
-        justify-content: center;
-        align-items:center;
-        height:25;
-        width:30;
-        background-color: rgba(0,0,0,0.36);
-        border-radius:4;
-   }
 
 </style>

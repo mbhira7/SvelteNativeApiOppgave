@@ -3,25 +3,18 @@
     export let language
     let array
     let forrige
+    $:array = language ? $languagesList : $decadesList
 
-    if(language){
-        array = $languagesList
-    }
-    else{
-        array = $decadesList
-    }
-
-    
-    const filterSearch = (item,clicked,index) =>  {
+    const filterSearch = (id,clicked,index) =>  {
         array[index].clicked = !clicked
-
-        const alleAndre = $languagesList.filter(language => language.id !== item)
+        
+        const alleAndre = array.filter(item => item.id !== id)
         alleAndre.forEach(a => {
             a.clicked = false
         })
 
         const replaceCharacter = () => {
-            let str = `${item}-12-31`;
+            let str = `${id}-12-31`;
             str = setCharAt(str,3,"9");
             $decadeEndValue = str
         }
@@ -31,21 +24,26 @@
             return str.substr(0,index) + chr + str.substr(index+1);
         }
 
-        if(array[index].clicked === true) {
+        if(array[index].clicked) {
             if(language){
-                $languageValue = item
+                $languageValue = id
             }
             else{
                 replaceCharacter()
-                $decadeStartValue = `${item}-01-01`
+                $decadeStartValue = `${id}-01-01`
             }
         }
         else{
-            $languageValue = ""
-            $decadeStartValue = ""
-            $decadeEndValue = ""
-            array[index].clicked = false
+            if(language){
+                $languageValue = ""
+            }
+            else{
+                $decadeStartValue = ""
+                $decadeEndValue = ""
+            }
+            
         }
+         console.log($languageValue, $decadeStartValue)
 
     }
 
@@ -54,15 +52,9 @@
 
 <wrapLayout  >
     {#each array as item, index}
-        {#if $decadeStartValue.includes(item.id) || $languageValue.includes(item.id)}
-            <flexBoxLayout style="background-color:pink" class="genre-div">
-                <label class="font-weight-bold white genre-label" on:tap={filterSearch(item.id,item.clicked,index)} text="{language ? item.name : `${item.id}s`}" />
-            </flexBoxLayout>
-        {:else}
-            <flexBoxLayout style="background-color: rgba(156, 156, 156, 0.3)" class="genre-div">
-                <label class="font-weight-bold white genre-label" on:tap={filterSearch(item.id,item.clicked,index)} text="{language ? item.name : `${item.id}s`}" />
-            </flexBoxLayout>
-        {/if}
+       <flexBoxLayout  class="{item.clicked ? "pink" : "grey"} genre-div">
+            <label class="font-weight-bold white genre-label" on:tap={filterSearch(item.id,item.clicked,index)} text="{language ? item.name : `${item.id}s`}" />
+        </flexBoxLayout>
     {/each}
 </wrapLayout>
 

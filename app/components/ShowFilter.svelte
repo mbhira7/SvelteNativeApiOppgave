@@ -7,18 +7,8 @@
     export let filterGenres
     export let filterLanguages
     export let filterYear
-    let signText = "+"
     let plussEnabled = true
-   
-    const toggle1 = () => {
-        plussEnabled = !plussEnabled
-        if(plussEnabled){
-            signText="+"
-        }
-        else{
-            signText="-"
-        }
-    }
+    $:signText = plussEnabled ? "+" : "-"
 
 </script>
 
@@ -28,7 +18,7 @@
     </flexBoxLayout>
     
     <flexBoxLayout col="1" class="end">
-        <label text="{signText}" class="white plussSign" on:tap={toggle1}/>
+        <label text="{signText}" class="white plussSign" on:tap={() => plussEnabled =! plussEnabled}/>
     </flexBoxLayout>
     {#if !plussEnabled}
     <flexBoxLayout style=" margin-top:30; height:auto;">
