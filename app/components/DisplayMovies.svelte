@@ -17,7 +17,7 @@
 </script>
 
 
-    <stackLayout >
+    <stackLayout style="padding-left:8;" >
         <flexBoxLayout class= "search " >
             {#if array.length > 0}
                 <label text="{heading}" class="font-weight-bold wite" />
@@ -26,9 +26,9 @@
                 <flexBoxLayout class="movies" >
                     {#if array.length >= 1}   
                         {#each array as movie}
-                            <gridLayout on:tap={() => viewMovie(movie)} class="movie" rows="130,auto" columns="105" >
-                                <image  col="0" row="0"  src={"https://image.tmdb.org/t/p/w185"+ movie.poster_path} style="border-radius:18;" />
-                                <flexBoxLayout col="1" class="rating-box text-center" style="margin-right:9;" verticalAlignment="top" horizontalAlignment="right">
+                            <gridLayout on:tap={() => viewMovie(movie)} class="movie" rows="130,auto" columns="95" >
+                                <image  col="0" row="0"  src={"https://image.tmdb.org/t/p/w500"+ movie.poster_path} style="border-radius:9;" />
+                                <flexBoxLayout col="1" class="rating-box text-center" style="margin-right:5;" verticalAlignment="top" horizontalAlignment="right">
                                     <label  class="text-center white" style="font-size:14;" text="{movie.vote_average}" />
                                 </flexBoxLayout>
                                 <label row="1" class="white font-size-14" style="padding:10;" text="{movie.title}" />

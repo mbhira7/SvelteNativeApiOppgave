@@ -1,12 +1,13 @@
 <script>
     import {showModal} from "svelte-native"
     import Movie from "../modals/Movie.svelte"
-    import {moviesByActor} from "../stores/stores.js"
+    import {test,moviesByActor,showActorsList} from "../stores/stores.js"
     export let array
     export let arrayFromStore
     export let heading
     let list
     $:list = arrayFromStore ? $moviesByActor : array
+    $:tekst = $moviesByActor.length === 0 && !$showActorsList ? "Sorry, no results" : ""
 
     const viewMovie = async (movie) => {
         await showModal({
@@ -24,11 +25,12 @@
 <stackLayout >
     <scrollView scrollBarIndicatorVisible={false}>
         <stackLayout >
-            <label text="{heading}" class={heading ? "h2 white centerText" : ""} />
+            <label text="{heading}" class={heading ? "h2 white text-center" : ""} />
+            <label text="{tekst}" class={tekst ? "h2 white text-center" : ""} />
             {#if list.length > 0}
                 {#each list as movie}
                     <gridLayout on:tap={() => viewMovie(movie)} class="movie" rows="130" columns="90,*"  >
-                        <image  col="0"  src={"https://image.tmdb.org/t/p/w185"+ movie.poster_path} style="border-radius:7;" />
+                        <image  col="0"  src={"https://image.tmdb.org/t/p/w500"+ movie.poster_path} style="border-radius:7;" />
                         <flexBoxLayout verticalAlignment="top" style="justify-content:flex-end; align-items:flex-end;">
                             <flexBoxLayout col="0" class="rating-box text-center" >
                                 <label  class=" white" style="font-size:14;" text="{movie.vote_average}" />
@@ -39,8 +41,7 @@
                             <label whiteSpace="nowrap" style="font-size:15;" class="white tester" textWrap="true" flexWrapBefore={true} text="{movie.overview} " />
                         </stackLayout>
                     </gridLayout>
-                    {:else}
-                        <activityIndicator busy={true} />
+                    
                 {/each}       
             {/if}
         </stackLayout>

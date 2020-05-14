@@ -21,16 +21,19 @@
     let navn
     let showMore = false
 
+    console.log(movie.id)
+
     onMount( async () => {
         await getData(casting)
             .then(res => actors = res.cast)
 
         await getData(casting)
             .then(res => personer = res.crew)
+        
         await getData(movieDetails)
             .then(res => moviesD = [...moviesD,res])
 
-        tester()
+        changeObjectValue()
            
     })
 
@@ -49,7 +52,6 @@
             genreNames = [...genreNames, $genresList[indeks].name]
         }
     )
-
 
     for(let i=1; i<genreNames.length; i++){
         genreNames[i] = "| " + genreNames[i];
@@ -82,10 +84,10 @@
         let restHours = Math.floor(hours);
         let minutes = (hours - restHours) * 60;
         let restMinutes = Math.round(minutes);
-        return restHours + " hr " + restMinutes + " min";
+        return (restHours > 0 ? restHours + " hr " : "") + (restMinutes > 0 ? (restMinutes + " min") : "");
     }
 
-    const tester = () => {
+    const changeObjectValue = () => {
         crew.map(c => {
             if(c.job === "Original Music Composer"){
                 c.job = "Music"
@@ -105,8 +107,8 @@
                 ios.position="right" />
         </actionBar>
         <scrollView scrollBarIndicatorVisible={false}>
-            <flexBoxLayout class="m-y-60" style="flex-direction:column; margin:0 50 0 50;">
-                <image src={"https://image.tmdb.org/t/p/w185"+ movie.poster_path} class="image img-rounded " style="margin-top:18; " stretch="aspectFill"/>
+            <flexBoxLayout class="m-y-60" style="flex-direction:column; margin:0 40 0 40;">
+                <image src={"https://image.tmdb.org/t/p/w500"+ movie.poster_path} class="image img-rounded " style="margin-top:18; " stretch="aspectFill"/>
                 <gridLayout   row="1" columns="170,*" style="margin-top:5; margin-bottom:3;">
                     <label textAlignment="left" textWrap="true" row="1" col="0" class="font-weight-bold white font-size-18" text="{movie.title}" />
                     <gridLayout col="1"  verticalAlignment="top" horizontalAlignment="right">
@@ -160,10 +162,6 @@
 
 <style>
 
-    .info{
-      
-    }
-    
     .image{
         height:370;
     }

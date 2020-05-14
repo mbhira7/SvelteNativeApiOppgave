@@ -15,7 +15,7 @@ The imported CSS rules must precede all other types of rules.
 
 
 .background{
-   background-image: linear-gradient(rgb(190, 122, 117),rgb(30, 50, 68));
+    background-image:linear-gradient(rgb(48, 42, 47),rgba(0, 0, 0, 0.959));
 }
 
 .white{
@@ -23,7 +23,7 @@ The imported CSS rules must precede all other types of rules.
 }
 
 page{
-    background-image: linear-gradient(rgb(190, 122, 117),rgb(30, 50, 68));
+    background-image:linear-gradient(rgb(48, 42, 47),rgba(0, 0, 0, 0.959));
 }
 
 .genre-div{
@@ -88,3 +88,7 @@ page{
     background-color: rgba(156, 156, 156, 0.3);
 }
 
+.flex-end{
+    justify-content:flex-end; 
+    align-items:flex-end; 
+}

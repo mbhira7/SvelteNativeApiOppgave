@@ -47,25 +47,28 @@ onMount( async () => {
 <page actionBarHidden={true}>
     <stackLayout >
     <tabs row="0" bind:selectedIndex={selectedTab} tabsPosition="bottom"  style="padding:0; margin:0;">
-        <tabStrip backgroundColor="rgb(30, 50, 68)" class="tabstrip-label">
+        
+        
+        <tabStrip backgroundColor="rgb(30, 30, 30)" class="tabstrip-label">
+           
             <tabStripItem >
                 <image src="font://&#xf008;" class="fas" />
-            
-                
             </tabStripItem >
 
             <tabStripItem >
-            
                 <image src="font://&#xf002;" class="fas" />
             </tabStripItem>
 
             <tabStripItem >
-               
                 <image src="font://&#xf02e;" class="far" />
             </tabStripItem>
+            
+
+           
 
         </tabStrip>
-
+        
+        
         <tabContentItem >
             <Homepage />
         </tabContentItem>
@@ -77,6 +80,11 @@ onMount( async () => {
         <tabContentItem>
             <Watchlist favourites={favourites} />
         </tabContentItem>
+        
+
+        
+
+        
     </tabs>
     </stackLayout>
 </page>
@@ -84,8 +92,7 @@ onMount( async () => {
 <style>
 
    .tabstrip-label{
-       justify-content: center;
-       align-items: center;
+      
        color:white;
        font-size:10;
        padding:0;

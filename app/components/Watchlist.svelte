@@ -1,7 +1,7 @@
 <script>
     import { onMount } from 'svelte'
     import {showModal} from "svelte-native"
-    import { db} from '../stores/stores.js'
+    import { db,genresList } from '../stores/stores.js'
     import Movie from "../modals/Movie.svelte"
     export let favourites 
     let searchValue = ""
@@ -31,7 +31,7 @@
             <flexBoxLayout class="movies" >
                 {#each filtrerte as favourite}
                     <gridLayout class="border" on:tap={() => viewMovie(favourite)} columns="90,*" rows="auto">
-                        <image  col="0" row="0" src={"https://image.tmdb.org/t/p/w185"+ favourite.poster_path}  class="img-rounded" />
+                        <image  col="0" row="0" src={"https://image.tmdb.org/t/p/w500"+ favourite.poster_path}  class="img-rounded" />
                         <stackLayout col="1" row="1" style="margin-left:10;">
                             <label textWrap="true"  verticalAlignment="top" text="{favourite.title}" style="font-size:16;" class="white font-weight-bold"/>
                             <label text="{favourite.release_date.slice(0, 4)}" class="white" style="font-size:15; margin-top:5; " />

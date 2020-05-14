@@ -27,7 +27,7 @@ const genreSearch = (clicked, id, i) => {
 </script>
 
 <stackLayout>
-    <segmentedBar horizontalAlignment="left"  width="120" height="30" selectedBackgroundColor="pink" bind:selectedIndex={$filterChoiceValue} style="margin-bottom:15;  margin-left:0; font-size: 14; color:black;">
+    <segmentedBar horizontalAlignment="left"  width="auto" height="30" selectedBackgroundColor="pink" bind:selectedIndex={$filterChoiceValue} style="margin-bottom:15;  margin-left:0; font-size: 14; color:black;">
         <segmentedBarItem title="OR"  />
         <segmentedBarItem title="AND" />
     </segmentedBar>
