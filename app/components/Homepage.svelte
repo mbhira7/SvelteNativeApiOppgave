@@ -18,6 +18,7 @@
     let moviePoster
     let i = 1
     let interval
+    let showEmptyIcon = true
 
 onMount(async () => {
     await getData(trendingMoviesUrl)
@@ -76,6 +77,8 @@ const test2 = () => {
 
 
 
+
+
 </script>
 
 <page >
@@ -85,11 +88,16 @@ const test2 = () => {
                 
                 <stackLayout orientation="horizontal" >
                    
-                    <flexBoxLayout on:tap={() => viewMovie(nextMovie)} class="background-image " 
-                     style=" background-image: url('{"https://image.tmdb.org/t/p/original" + moviePoster}'); " >
-                    <flexBoxLayout class="gradient"/>
-                    
+                    <flexBoxLayout horizontalAlignment="right" on:tap={() => viewMovie(nextMovie)} class="background-image" 
+                     style="padding:8; justify-content:flex-end; align-items:flex-end; background-image: url('{"https://image.tmdb.org/t/p/original" + moviePoster}'); " >
+                      <flexBoxLayout  style="height:22; width:14; justify-content:center; align-items:flex-end;"  >
+                            {#if showEmptyIcon}
+                                <image on:tap={() => showEmptyIcon = !showEmptyIcon} src="font://&#xf02e;" style="height:100%; width:100%;" class="far" />
+                            {:else}
+                                <image on:tap={() => showEmptyIcon = !showEmptyIcon} src="font://&#xf02e;" style="height:100%; width:100%;" class="fas " />
+                            {/if}
                     </flexBoxLayout>
+                    
                 </stackLayout>
 
                 <!--<scrollView orientation="horizontal" scrollBarIndicatorVisible={false} scroll="onScroll">
@@ -144,6 +152,12 @@ const test2 = () => {
 
     .bakgrunn{
        background-image:linear-gradient(rgb(48, 42, 47),rgba(0, 0, 0, 0.959));
+    }
+
+    
+
+     .far{
+        color:white;
     }
 
     .fas{
