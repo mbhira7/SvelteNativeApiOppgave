@@ -120,10 +120,12 @@ const test2 = () => {
     }
 
     .gradient{
-        background-image: linear-gradient(transparent 40%,rgba(0, 0, 0, 0.959));
+        height:230;
         width:100%;
-        height:260;
+        background-image: linear-gradient(transparent 40%,black);
     }
+
+   
 
     .font{
         font-family: 'Ultra-Regular'

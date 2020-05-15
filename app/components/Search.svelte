@@ -158,10 +158,6 @@
                     <segmentedBarItem title="Director" />
                 </segmentedBar>
                 <searchBar on:textChange={titleSearch} borderRadius="50" bind:text={searchValue} style=" height:45; width:100%;  margin-bottom:18;" hint="Search by {placeholderText}" />
-                 
-
-                
-                
             {/if}   
         </stackLayout>
         {#if showFilterPage && $showFilterBox}
