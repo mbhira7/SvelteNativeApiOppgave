@@ -13,12 +13,13 @@
     let newMovies = []
     let topRatedMovies = []
     let nowPlaying = []
-    let fail = []
-    let nextMovie 
+    let movie
     let moviePoster
     let i = 1
     let interval
     let showEmptyIcon = true
+    let visModal = false
+
 
 onMount(async () => {
     await getData(trendingMoviesUrl)
@@ -31,24 +32,25 @@ onMount(async () => {
     await getData(nowPlayingUrl)
         .then(res => nowPlaying = res.results)
     
-    interval = setInterval(test, 3000)
+    test()
     
-   
-
 })
 
 
 
 
 
-const viewMovie = async (movie) => {
-        await showModal({
+const viewMovie = async (movie,event) => {
+
+    await showModal({
             page: Movie,
             fullscreen:true,
             props:{
                 movie:movie
             }
         })
+
+    
     
 }
 
@@ -58,7 +60,7 @@ const test = () => {
        i = 0
    }
 
-   nextMovie = topRatedMovies[i]
+   movie = topRatedMovies[i]
    moviePoster = topRatedMovies[i].poster_path
 
     i++
@@ -67,19 +69,31 @@ const test = () => {
 
 
 
-const test2 = () => {
+
+
+const nextMovie = (event) => {
     test()
     interval = clearInterval(interval)
-    interval = setInterval(test, 3000)
-
+    interval = setInterval(test, 5000)
+    
     
 }
 
+const previousMovie = () => {
+      
+
+}
+
+
+interval = setInterval(test, 5000)
 
 
 
 
 </script>
+
+
+
 
 <page >
     <stackLayout class="bakgrunn">
@@ -88,27 +102,27 @@ const test2 = () => {
                 
                 <stackLayout orientation="horizontal" >
                    
-                    <flexBoxLayout horizontalAlignment="right" on:tap={() => viewMovie(nextMovie)} class="background-image" 
-                     style="padding:8; justify-content:flex-end; align-items:flex-end; background-image: url('{"https://image.tmdb.org/t/p/original" + moviePoster}'); " >
-                      <flexBoxLayout  style="height:22; width:14; justify-content:center; align-items:flex-end;"  >
-                            {#if showEmptyIcon}
-                                <image on:tap={() => showEmptyIcon = !showEmptyIcon} src="font://&#xf02e;" style="height:100%; width:100%;" class="far" />
-                            {:else}
-                                <image on:tap={() => showEmptyIcon = !showEmptyIcon} src="font://&#xf02e;" style="height:100%; width:100%;" class="fas " />
-                            {/if}
+                    {#if topRatedMovies.length > 0}
+                    <flexBoxLayout  class="background-image" 
+                     style="  background-image: url('{"https://image.tmdb.org/t/p/w342" + moviePoster}'); " >
+                        
+
+                    <gridLayout columns="auto,*,auto">
+                        <flexBoxLayout style="justify-content:flex-start">
+                            <image on:tap={nextMovie} src="font://&#xf053;" style="height:22; width:14" class="fas" />
+                        </flexBoxLayout>
+                        <flexBoxLayout col="1" on:tap={() => viewMovie(movie)}  style="height:100%;"/>
+                        
+                        
+                        <flexBoxLayout col="2"  style="justify-content:flex-end">
+                            <image on:tap={nextMovie} src="font://&#xf054;" style="height:22; width:14" class="fas" />
+                        </flexBoxLayout>
+                    </gridLayout>   
+                           
                     </flexBoxLayout>
+                    {/if}
                     
                 </stackLayout>
-
-                <!--<scrollView orientation="horizontal" scrollBarIndicatorVisible={false} scroll="onScroll">
-                    <stackLayout orientation="horizontal"  horizontalAlignment="center" >
-                        
-                            <flexBoxLayout  class="tester" style="height:210; width:400; background-image:url('{"https://image.tmdb.org/t/p/w500" + epicfail2}')">
-                                
-                            </flexBoxLayout>
-                        
-                    </stackLayout>
-                </scrollView>-->
                
                 <DisplayMovies heading="Now playing" array={nowPlaying} />
                 <DisplayMovies heading="Trending movies" array={trendingMovies} />
@@ -128,7 +142,7 @@ const test2 = () => {
     }
 
     .gradient{
-        height:230;
+        
         width:100%;
         background-image: linear-gradient(transparent 40%,black);
     }
@@ -161,7 +175,7 @@ const test2 = () => {
     }
 
     .fas{
-        color:white;
+        color:rgb(255, 255, 255);
     }
 
 </style>

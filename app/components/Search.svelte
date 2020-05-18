@@ -10,19 +10,20 @@
     import Movie from "../modals/Movie.svelte"
     let searchResults = []
     let filterResults = []
-    let showFilterPage 
+    let showFilterPage = false
     let title = "Browse"
     let noResultsMessage
     let noActorsResultsMessage
     let noDirectorsResultsMessage
     let inputMessage
     let inputValue
-    let searchValue
+    let searchValue = ""
     let searchChoiceValue = 0
     const topRatedMoviesUrl = `https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}`
     let topRatedMovies = []
     let personer = []
     let prom
+    let showGrid = true
      $:placeholderText = searchChoiceValue === 0 ? "title" : place
      $:place = searchChoiceValue === 1 ? "actor" : "director"
     $:actors = personer.filter(person => person.known_for_department === "Acting")
@@ -81,11 +82,14 @@
 
     const toggle1 = () => {
         showFilterPage = false
-        title="Search"
+        showGrid = false
+        title="Browse"
         $showFilterBox = false
         filterResults = ""
         noResultsMessage = ""
         inputMessage = ""
+
+        console.log(searchValue.length)
     }
 
     const toggle2 = () => {
@@ -148,16 +152,49 @@
             
             
             
+            
+            
         </stackLayout>
         
         <stackLayout >
-            {#if showFilterPage === false}
-                <segmentedBar horizontalAlignment="center" width="auto" height="30" backgroundColor="white" selectedBackgroundColor="pink" on:selectedIndexChange={() => titleSearch(searchChoiceValue)} bind:selectedIndex={searchChoiceValue} style="margin-bottom:15;  margin-left:0; font-size: 14; color:black;">
+            {#if showFilterPage === false }
+                <segmentedBar horizontalAlignment="center" width="auto" height="30" backgroundColor="gray" selectedBackgroundColor="rgb(41, 41, 41)" on:selectedIndexChange={() => titleSearch(searchChoiceValue)} bind:selectedIndex={searchChoiceValue} style="margin-bottom:15;  margin-left:0; font-size: 14; color:white;">
                     <segmentedBarItem title="Title"  />
                     <segmentedBarItem title="Actor" />
                     <segmentedBarItem title="Director" />
                 </segmentedBar>
                 <searchBar on:textChange={titleSearch} borderRadius="50" bind:text={searchValue} style=" height:45; width:100%;  margin-bottom:18;" hint="Search by {placeholderText}" />
+                {#if topRatedMovies.length > 0 && searchValue.length === 0 }
+            <scrollView scrollBarIndicatorVisible={false}>
+            <flexBoxLayout flexWrap="wrap" width="100%" style="justify-content:center; ">
+                    <flexBoxLayout on:tap={() => viewMovie(topRatedMovies[0])} class="flex-end tester" style="background-image:url('{"https://image.tmdb.org/t/p/w780" + topRatedMovies[0].poster_path}')"  width="120" height="130" >
+                        <label text="1" class="h1 white" />
+                    </flexBoxLayout>
+                    <flexBoxLayout on:tap={() => viewMovie(topRatedMovies[1])} class="flex-end tester" style="background-image:url('{"https://image.tmdb.org/t/p/w780" + topRatedMovies[1].poster_path}')"  width="110" height="80"  >
+                        <label text="2" class="h1 white" />
+                    </flexBoxLayout>
+                    <flexBoxLayout on:tap={() => viewMovie(topRatedMovies[2])} class="flex-end tester" style="background-image:url('{"https://image.tmdb.org/t/p/w780" + topRatedMovies[2].poster_path}')" width="100" height="150"  >
+                        <label text="3" class="h1 white" />
+                    </flexBoxLayout>
+                    <flexBoxLayout on:tap={() => viewMovie(topRatedMovies[3])} class="flex-end tester" style="background-image:url('{"https://image.tmdb.org/t/p/w780" + topRatedMovies[3].poster_path}')"  width="100" height="120" >
+                        <label text="4" class="h1 white" />
+                    </flexBoxLayout>
+                    <flexBoxLayout on:tap={() => viewMovie(topRatedMovies[4])} class="flex-end tester" style="background-image:url('{"https://image.tmdb.org/t/p/w780" + topRatedMovies[4].poster_path}')"  width="130" height="120"  >
+                        <label text="5" class="h1 white" />
+                    </flexBoxLayout>
+                    <flexBoxLayout on:tap={() => viewMovie(topRatedMovies[5])} class="flex-end tester" style="background-image:url('{"https://image.tmdb.org/t/p/w780" + topRatedMovies[5].poster_path}')"  width="100" height="150"  >
+                        <label text="6" class="h1 white" />
+                    </flexBoxLayout>
+                    <flexBoxLayout on:tap={() => viewMovie(topRatedMovies[6])} class="flex-end tester" style="background-image:url('{"https://image.tmdb.org/t/p/w780" + topRatedMovies[6].poster_path}')"  width="180" height="110" >
+                        <label text="7" class="h1 white" />
+                    </flexBoxLayout>
+                    <flexBoxLayout on:tap={() => viewMovie(topRatedMovies[7])} class="flex-end tester" style="background-image:url('{"https://image.tmdb.org/t/p/w780" + topRatedMovies[7].poster_path}')"  width="150" height="110" >
+                        <label text="8" class="h1 white" />
+                    </flexBoxLayout>
+                </flexBoxLayout>
+
+            </scrollView>
+                {/if}
             {/if}   
         </stackLayout>
         {#if showFilterPage && $showFilterBox}
