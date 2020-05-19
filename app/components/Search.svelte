@@ -2,7 +2,7 @@
     import {onMount} from "svelte"
     import {showModal} from "svelte-native"
     import {getData,apiKey} from "../constants/constant.js"
-    import {test,moviesByActor,showActorsList,filterChoiceValue,showFilterBox,chosenGenres,languageValue,decadeStartValue,decadeEndValue} from "../stores/stores.js"
+    import {tekst,moviesByActor,showActorsList,filterChoiceValue,showFilterBox,chosenGenres,languageValue,decadeStartValue,decadeEndValue} from "../stores/stores.js"
     import DisplayMovies from "./DisplayMovies.svelte"
     import SearchResults from "./SearchResults.svelte"
     import ScrollViewCastCrew from "./ScrollViewCastCrew.svelte"
@@ -11,6 +11,7 @@
     let searchResults = []
     let filterResults = []
     let showFilterPage = false
+    let showSearchPage = true
     let title = "Browse"
     let noResultsMessage
     let noActorsResultsMessage
@@ -22,25 +23,39 @@
     const topRatedMoviesUrl = `https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}`
     let topRatedMovies = []
     let personer = []
-    let prom
     let showGrid = true
+    let i = 1
      $:placeholderText = searchChoiceValue === 0 ? "title" : place
      $:place = searchChoiceValue === 1 ? "actor" : "director"
     $:actors = personer.filter(person => person.known_for_department === "Acting")
     $:directors = personer.filter(person => person.known_for_department === "Directing")
    
     onMount(async () => {
+        searchChoiceValue = 0
         await getData(topRatedMoviesUrl)
             .then(res => topRatedMovies = res.results)
+        console.log(searchChoiceValue)
     })
+
+    const test = () => {
+        if(i > 9) {
+            i = 1
+        }
+
+        return i++
+    }
+    
 
 
    const titleSearch = async () => {
+
+       console.log(searchChoiceValue)
        
        noResultsMessage = ""
        noActorsResultsMessage = ""
        noDirectorsResultsMessage = ""
        $showActorsList = true
+       $tekst = ""
 
        if(searchValue.length === 0) { 
             searchResults = []
@@ -54,8 +69,8 @@
 
 
         if(searchChoiceValue === 0) {
-            prom = await getData(`https://api.themoviedb.org/3/search/movie?query=${encodeURI(searchValue)}&api_key=${apiKey}`)
-            searchResults = prom.results
+            await getData(`https://api.themoviedb.org/3/search/movie?query=${encodeURI(searchValue)}&api_key=${apiKey}`)
+            .then(res => searchResults = res.results)
         }
 
            
@@ -67,38 +82,54 @@
         }
 
 
-        if(searchValue.length > 0 && searchResults.length === 0) {
+        if(searchValue.length > 0 && searchResults.length === 0 && searchChoiceValue === 0) {
            noResultsMessage = "Sorry, no results"
         }
 
-        if(searchValue.length > 0 && actors.length === 0) {
+        if(searchValue.length > 0 && actors.length === 0 && searchChoiceValue === 1) {
            noActorsResultsMessage = "Sorry, no results"
         }
 
-        if(searchValue.length > 0 && directors.length === 0) {
+        if(searchValue.length > 0 && directors.length === 0 && searchChoiceValue === 2) {
            noDirectorsResultsMessage = "Sorry, no results"
         }
     }
 
+   
+
     const toggle1 = () => {
         showFilterPage = false
-        showGrid = false
-        title="Browse"
+        showGrid = !showGrid
+        if(showGrid){
+            title="Browse"
+        }
+        else{
+            title="Search"
+        }
+       
         $showFilterBox = false
         filterResults = ""
         noResultsMessage = ""
+        noActorsResultsMessage = ""
+        noDirectorsResultsMessage = ""
         inputMessage = ""
+        $tekst = ""
+        console.log(searchChoiceValue)
 
-        console.log(searchValue.length)
     }
 
     const toggle2 = () => {
         showFilterPage = true
+        showSearchPage = true
+        showGrid = true
         title = "Filter"
         $showFilterBox = true
         filterResults = ""
         noResultsMessage = ""
+        noActorsResultsMessage = ""
+        noDirectorsResultsMessage = ""
         inputMessage = ""
+        $tekst = ""
     }
 
     const filterSearch = async () => {
@@ -142,60 +173,47 @@
         <stackLayout>
             <flexBoxLayout class="container">
                 <stackLayout on:tap={toggle1} verticalAlignment="top">
-                    <image width="20" src="font://&#xf002;" class="fas " />
+                    {#if (showGrid && !showFilterPage) || showFilterPage}
+                        <image width="20" src="font://&#xf002;" class="fas " />
+                    {:else}
+                        <image width="20" src="font://&#xf060;" class="fas " />
+                    {/if}
                 </stackLayout>
-                <label verticalAlignment="top" textAlignment="center" class="h2 white" text="{title}"/>
+                <label verticalAlignment="top" class="uppercase white h2 text-center" text="{title}"/>
                 <stackLayout on:tap={toggle2} verticalAlignment="top">
                     <image width="20" src="font://&#xf0b0;" class="fas" />
                 </stackLayout>
             </flexBoxLayout>
-            
-            
-            
-            
-            
         </stackLayout>
         
         <stackLayout >
-            {#if showFilterPage === false }
-                <segmentedBar horizontalAlignment="center" width="auto" height="30" backgroundColor="gray" selectedBackgroundColor="rgb(41, 41, 41)" on:selectedIndexChange={() => titleSearch(searchChoiceValue)} bind:selectedIndex={searchChoiceValue} style="margin-bottom:15;  margin-left:0; font-size: 14; color:white;">
+           
+            {#if topRatedMovies.length > 0 && showGrid && !showFilterPage}
+             
+                <label text="Top rated" class="h2 white text-center"/>
+                <flexBoxLayout style="justify-content:center;">
+               
+                    <wrapLayout orientation="horizontal" >
+                        {#each topRatedMovies.slice(0,9) as movie}
+                            <flexBoxLayout style="padding:2;">
+                                <flexBoxLayout on:tap={() => viewMovie(movie)} style="background-image: url('{"https://image.tmdb.org/t/p/w342" + movie.poster_path}'); height:30%; width:30%; background-size: 100% 100%; align-items:flex-end; border-radius:4;" >
+                                <label text="{test()}"  class="h1 font my-label border" style=" padding-left:12;" />
+                                </flexBoxLayout>
+                            </flexBoxLayout>
+                        {/each}
+                    </wrapLayout>
+                </flexBoxLayout>
+             
+            {/if}
+
+            {#if !showFilterPage && !showGrid}
+                <segmentedBar horizontalAlignment="center" width="auto" height="30"  backgroundColor="gray" on:selectedIndexChange={() => titleSearch(searchChoiceValue)} bind:selectedIndex={searchChoiceValue} selectedBackgroundColor="rgb(41, 41, 41)" style="margin-bottom:15;  margin-left:0; font-size: 14; color:white;">
                     <segmentedBarItem title="Title"  />
                     <segmentedBarItem title="Actor" />
                     <segmentedBarItem title="Director" />
                 </segmentedBar>
                 <searchBar on:textChange={titleSearch} borderRadius="50" bind:text={searchValue} style=" height:45; width:100%;  margin-bottom:18;" hint="Search by {placeholderText}" />
-                {#if topRatedMovies.length > 0 && searchValue.length === 0 }
-            <scrollView scrollBarIndicatorVisible={false}>
-            <flexBoxLayout flexWrap="wrap" width="100%" style="justify-content:center; ">
-                    <flexBoxLayout on:tap={() => viewMovie(topRatedMovies[0])} class="flex-end tester" style="background-image:url('{"https://image.tmdb.org/t/p/w780" + topRatedMovies[0].poster_path}')"  width="120" height="130" >
-                        <label text="1" class="h1 white" />
-                    </flexBoxLayout>
-                    <flexBoxLayout on:tap={() => viewMovie(topRatedMovies[1])} class="flex-end tester" style="background-image:url('{"https://image.tmdb.org/t/p/w780" + topRatedMovies[1].poster_path}')"  width="110" height="80"  >
-                        <label text="2" class="h1 white" />
-                    </flexBoxLayout>
-                    <flexBoxLayout on:tap={() => viewMovie(topRatedMovies[2])} class="flex-end tester" style="background-image:url('{"https://image.tmdb.org/t/p/w780" + topRatedMovies[2].poster_path}')" width="100" height="150"  >
-                        <label text="3" class="h1 white" />
-                    </flexBoxLayout>
-                    <flexBoxLayout on:tap={() => viewMovie(topRatedMovies[3])} class="flex-end tester" style="background-image:url('{"https://image.tmdb.org/t/p/w780" + topRatedMovies[3].poster_path}')"  width="100" height="120" >
-                        <label text="4" class="h1 white" />
-                    </flexBoxLayout>
-                    <flexBoxLayout on:tap={() => viewMovie(topRatedMovies[4])} class="flex-end tester" style="background-image:url('{"https://image.tmdb.org/t/p/w780" + topRatedMovies[4].poster_path}')"  width="130" height="120"  >
-                        <label text="5" class="h1 white" />
-                    </flexBoxLayout>
-                    <flexBoxLayout on:tap={() => viewMovie(topRatedMovies[5])} class="flex-end tester" style="background-image:url('{"https://image.tmdb.org/t/p/w780" + topRatedMovies[5].poster_path}')"  width="100" height="150"  >
-                        <label text="6" class="h1 white" />
-                    </flexBoxLayout>
-                    <flexBoxLayout on:tap={() => viewMovie(topRatedMovies[6])} class="flex-end tester" style="background-image:url('{"https://image.tmdb.org/t/p/w780" + topRatedMovies[6].poster_path}')"  width="180" height="110" >
-                        <label text="7" class="h1 white" />
-                    </flexBoxLayout>
-                    <flexBoxLayout on:tap={() => viewMovie(topRatedMovies[7])} class="flex-end tester" style="background-image:url('{"https://image.tmdb.org/t/p/w780" + topRatedMovies[7].poster_path}')"  width="150" height="110" >
-                        <label text="8" class="h1 white" />
-                    </flexBoxLayout>
-                </flexBoxLayout>
-
-            </scrollView>
-                {/if}
-            {/if}   
+            {/if}
         </stackLayout>
         {#if showFilterPage && $showFilterBox}
             <scrollView scrollBarIndicatorVisible={false}>
@@ -215,18 +233,18 @@
         {#if showFilterPage }
             <SearchResults heading={noResultsMessage} array={filterResults } /> 
         {/if}
-        {#if !showFilterPage && searchChoiceValue === 0}
+        {#if !showFilterPage && searchChoiceValue === 0 && !showGrid}
             <SearchResults heading={noResultsMessage} array={searchResults } /> 
         {/if}
         
-        {#if !showFilterPage && searchChoiceValue === 1 && $showActorsList}
-            <ScrollViewCastCrew heading={noActorsResultsMessage} array={actors} useFunction={true}/>
+        {#if !showFilterPage && searchChoiceValue === 1 && $showActorsList && !showGrid}
+            <ScrollViewCastCrew heading="{noActorsResultsMessage}" array={actors} useFunction={true}/>
         {/if}
 
-        {#if !showFilterPage && searchChoiceValue === 2 && $showActorsList}
+        {#if !showFilterPage && searchChoiceValue === 2 && $showActorsList && !showGrid}
             <ScrollViewCastCrew heading={noDirectorsResultsMessage} array={directors} useFunction={true} director={true}/>
         {/if}
-        {#if !showFilterPage && (searchChoiceValue === 1 || searchChoiceValue === 2)}
+        {#if !showFilterPage && (searchChoiceValue === 1 || searchChoiceValue === 2) && !showGrid}
             <SearchResults arrayFromStore={true}/>
         {/if}
     </stackLayout>
@@ -262,7 +280,7 @@
         padding:16 0 16 0;
     }
 
-    .h2{
+    .uppercase{
         flex: 2;
         text-transform: uppercase;
     }
@@ -280,5 +298,12 @@
         margin-top:15;
     }
 
+    .font{
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        color:  white;
+       
+    }
+
+ 
 
 </style>

@@ -6,10 +6,11 @@
     import ScrollViewCastCrew from "../components/ScrollViewCastCrew"
     export let movie
     const appSettings = require("tns-core-modules/application-settings")
-    const movies = $db.collection(`${$uniqueKey}`)
-    const checkMovie = movies.doc(`${movie.id}`)
+    let movies = $db.collection(`${$uniqueKey}`)
+    let checkMovie = movies.doc(`${movie.id}`)
     const casting = `https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${apiKey}`
     const movieDetails = `https://api.themoviedb.org/3/movie/${movie.id}?api_key=${apiKey}`
+    const reviewsUrl = `https://api.themoviedb.org/3/movie/${movie.id}/reviews?api_key=${apiKey}`
     let genreNames = []
     let showEmptyIcon = true
     let actors = []
@@ -18,8 +19,10 @@
         return person.job === "Director" | person.job === "Screenplay" | person.job === "Original Music Composer" | person.job === "Producer"
     })
     let moviesD = []
+    let reviews = []
     let navn
     let showMore = false
+    let showReviews = false
 
     console.log(movie.id)
 
@@ -32,10 +35,12 @@
         
         await getData(movieDetails)
             .then(res => moviesD = [...moviesD,res])
+        
+        await getData(reviewsUrl)
+            .then(res => reviews = res.results)
 
-        changeObjectValue()
-           
     })
+
 
     checkMovie.onSnapshot(doc => {
         if (doc.exists) {
@@ -45,6 +50,7 @@
             showEmptyIcon = true
         }
     })
+    
 
     movie.genre_ids.forEach(
         genreId => {
@@ -87,14 +93,6 @@
         return (restHours > 0 ? restHours + " hr " : "") + (restMinutes > 0 ? (restMinutes + " min") : "");
     }
 
-    const changeObjectValue = () => {
-        crew.map(c => {
-            if(c.job === "Original Music Composer"){
-                c.job = "Music"
-            }
-        })
-    }
-
 </script>
 
 <frame >
@@ -132,13 +130,47 @@
                     <label text="{convertToHoursMinutes(m.runtime)}" class="white font-size-16" style=" margin-bottom:8;"/>
                 {/each}
                 <label class="white font-size-16" col="0" textWrap="true" row="2" text="{movie.overview}"  lineHeight="7" />
-                <label class="font-weight-bold white margin-bottom-10 margin-top-15" text="Cast" />
-                {#if actors | actors.length > 0 }
-                    <ScrollViewCastCrew array={actors.slice(0,6)} />
+                <flexBoxLayout style="align-items:flex-start;">
+                    
+                    <label on:tap={() => showReviews = false} text="About" style="margin-right:25; " class="{!showReviews ? "border-bottom " : ""}font-weight-bold white font-size-17 margin-top-15"/>
+                    
+                    <label on:tap={() => showReviews = true} text="Reviews" class="{showReviews ? "border-bottom " : ""}font-weight-bold white font-size-17 margin-top-15"/>
+                    
+                </flexBoxLayout>
+                {#if !showReviews}
+                    <label class="font-weight-bold white margin-bottom-10 font-size-16 margin-top-15" text="Cast" />
+                    {#if actors.length > 0}
+                        <ScrollViewCastCrew array={actors.slice(0,6)} />
+                    {:else}
+                        <label text="Sorry, no cast available" class="white"/>
+                    {/if}
+                    <label class="font-weight-bold white font-size-16 margin-bottom-10 margin-top-15" text="Crew" />
+                    {#if crew.length > 0}
+                        <ScrollViewCastCrew array={crew} testVerdi={true}/>
+                    {:else}
+                        <label text="Sorry, no information available" class="white"/>
+                    {/if}
+
                 {:else}
-                    <label text="Sorry, no cast available" class="white"/>
+                    {#if reviews.length > 0}
+                        {#each reviews as review}
+                            <label text="{review.author}" style="color:yellow;" class=" font-size-16"/>
+                            <label text="{review.content}" textWrap="true" class="white font-size-16"/>
+                        {/each}
+                    {:else}
+                        <label text="Sorry, no reviews" class="white"/>
+                    {/if}
                 {/if}
-                {#if showMore}
+                
+                
+            </flexBoxLayout>
+        </scrollView>
+    </page>
+</frame>
+
+<!--
+
+    {#if showMore}
                      <label class="font-weight-bold white margin-bottom-10 margin-top-15" text="Crew" />
                     {#if crew | crew.length > 0}
                         <ScrollViewCastCrew array={crew} />
@@ -154,10 +186,7 @@
                         <image src="font://&#xf078;" style="height:18; width:18" class="fas" />
                     {/if}
                 </stackLayout>
-            </flexBoxLayout>
-        </scrollView>
-    </page>
-</frame>
+-->
 
 
 <style>
@@ -175,3 +204,5 @@
     }
 
 </style>
+
+

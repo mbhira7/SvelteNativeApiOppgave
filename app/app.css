@@ -52,6 +52,10 @@ page{
     font-size:16;
 }
 
+.font-size-17{
+    font-size:17;
+}
+
 .font-size-14{
     font-size:14;
 }
@@ -91,4 +95,9 @@ page{
 .flex-end{
     justify-content:flex-end; 
     align-items:flex-end; 
+}
+
+.border-bottom{
+    border-bottom-width: 2;
+    border-bottom-color: white;
 }

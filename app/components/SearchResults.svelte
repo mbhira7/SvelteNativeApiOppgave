@@ -1,13 +1,12 @@
 <script>
     import {showModal} from "svelte-native"
     import Movie from "../modals/Movie.svelte"
-    import {test,moviesByActor,showActorsList} from "../stores/stores.js"
+    import {tekst,moviesByActor,showActorsList} from "../stores/stores.js"
     export let array
     export let arrayFromStore
     export let heading
     let list
     $:list = arrayFromStore ? $moviesByActor : array
-    $:tekst = $moviesByActor.length === 0 && !$showActorsList ? "Sorry, no results" : ""
 
     const viewMovie = async (movie) => {
         await showModal({
@@ -25,8 +24,8 @@
 <stackLayout >
     <scrollView scrollBarIndicatorVisible={false}>
         <stackLayout >
-            <label text="{heading}" class={heading ? "h2 white text-center" : ""} />
-            <label text="{tekst}" class={tekst ? "h2 white text-center" : ""} />
+            <label text="{heading}" class={heading ? "h2 white " : ""} />
+            <label text="{$tekst}" class={$tekst ? "h2 white " : ""} />
             {#if list.length > 0}
                 {#each list as movie}
                     <gridLayout on:tap={() => viewMovie(movie)} class="movie" rows="130" columns="90,*"  >

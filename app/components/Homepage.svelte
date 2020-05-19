@@ -5,7 +5,7 @@
     import Movie from "../modals/Movie.svelte"
     import DisplayMovies from "./DisplayMovies.svelte"
     import {getData,apiKey} from "../constants/constant.js"
-    const trendingMoviesUrl = `https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=${apiKey}`
+    const trendingMoviesUrl = `https://api.themoviedb.org/3/movie/popular?&api_key=${apiKey}`
     const newMoviesUrl = `https://api.themoviedb.org/3/discover/movie?primary_release_year=2020&api_key=${apiKey}`
     const topRatedMoviesUrl = `https://api.themoviedb.org/3/movie/upcoming?api_key=${apiKey}&language=en-US&page=1`
     const nowPlayingUrl = `https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}&language=en-US&page=1`
@@ -15,7 +15,7 @@
     let nowPlaying = []
     let movie
     let moviePoster
-    let i = 1
+    let i = 0
     let interval
     let showEmptyIcon = true
     let visModal = false
@@ -32,7 +32,8 @@ onMount(async () => {
     await getData(nowPlayingUrl)
         .then(res => nowPlaying = res.results)
     
-    test()
+    await slideshow()
+    
     
 })
 
@@ -49,43 +50,36 @@ const viewMovie = async (movie,event) => {
                 movie:movie
             }
         })
-
-    
-    
 }
 
 
-const test = () => {
-   if(i >= 8) {
-       i = 0
-   }
+const slideshow = () => {
+    if(topRatedMovies.length > 0){
+    if(i >= 8 ) {
+        i = 0
+    }
 
-   movie = topRatedMovies[i]
-   moviePoster = topRatedMovies[i].poster_path
+        movie = topRatedMovies[i]
+        moviePoster = topRatedMovies[i].poster_path
 
-    i++
-   
+        i++
+    }
 }
-
-
-
 
 
 const nextMovie = (event) => {
-    test()
+    slideshow()
     interval = clearInterval(interval)
-    interval = setInterval(test, 5000)
-    
-    
-}
-
-const previousMovie = () => {
-      
-
+    interval = setInterval(slideshow, 3000)
 }
 
 
-interval = setInterval(test, 5000)
+
+
+
+    interval = setInterval(slideshow, 3000)
+
+
 
 
 
@@ -107,19 +101,30 @@ interval = setInterval(test, 5000)
                      style="  background-image: url('{"https://image.tmdb.org/t/p/w342" + moviePoster}'); " >
                         
 
-                    <gridLayout columns="auto,*,auto">
-                        <flexBoxLayout style="justify-content:flex-start">
-                            <image on:tap={nextMovie} src="font://&#xf053;" style="height:22; width:14" class="fas" />
+                    <gridLayout  columns="auto,*,auto">
+                        <flexBoxLayout  style=" background-color:rgba(0,0,0,0.2);">
+                            <image src="font://&#xf053;" style="height:22; width:14; margin-left:10;" class="fas" />
                         </flexBoxLayout>
-                        <flexBoxLayout col="1" on:tap={() => viewMovie(movie)}  style="height:100%;"/>
+                        <flexBoxLayout col="1" on:tap={() => viewMovie(movie)} style="height:100%;"/>
                         
                         
-                        <flexBoxLayout col="2"  style="justify-content:flex-end">
-                            <image on:tap={nextMovie} src="font://&#xf054;" style="height:22; width:14" class="fas" />
+                        <flexBoxLayout on:tap={nextMovie} col="2"  style="background-color:rgba(0,0,0,0.08);  ">
+                            <image src="font://&#xf054;" style="height:22; width:14; margin-right:10; " class="fas" />
                         </flexBoxLayout>
+
+                        
                     </gridLayout>   
                            
                     </flexBoxLayout>
+
+                    <!---{#if topRatedMovies.length > 0}
+                   <scrollView orientation="horizontal">
+                   <stackLayout orientation="horizontal" style="width:100%; height:300;">
+                        <image src="{"https://image.tmdb.org/t/p/w342" + moviePoster}" stretch="auto-fill"/>
+                   </stackLayout>
+                    </scrollView>
+                    
+                    {/if}-->
                     {/if}
                     
                 </stackLayout>
@@ -144,7 +149,7 @@ interval = setInterval(test, 5000)
     .gradient{
         
         width:100%;
-        background-image: linear-gradient(transparent 40%,black);
+        background-image: linear-gradient(transparent 70%,#221e22);
     }
 
    
