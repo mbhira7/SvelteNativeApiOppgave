@@ -1,7 +1,7 @@
 <script>
     import { onMount } from 'svelte'
     import {closeModal} from "svelte-native"
-    import {getData,apiKey} from "../constants/constant.js"
+    import {getData,apiKey,createList} from "../constants/constant.js"
     import { db,uniqueKey,genresList } from '../stores/stores.js'
     import ScrollViewCastCrew from "../components/ScrollViewCastCrew"
     export let movie
@@ -15,16 +15,18 @@
     let showEmptyIcon = true
     let actors = []
     let personer = []
+    let tabell = []
     $:crew = personer.filter(person => {
         return person.job === "Director" | person.job === "Screenplay" | person.job === "Original Music Composer" | person.job === "Producer"
     })
     let moviesD = []
     let reviews = []
     let navn
-    let showMore = false
+    let readMore = false
     let showReviews = false
+    let message = "Read more"
 
-    console.log(movie.id)
+
 
     onMount( async () => {
         await getData(casting)
@@ -38,6 +40,8 @@
         
         await getData(reviewsUrl)
             .then(res => reviews = res.results)
+        
+        createList(reviews)
 
     })
 
@@ -93,6 +97,25 @@
         return (restHours > 0 ? restHours + " hr " : "") + (restMinutes > 0 ? (restMinutes + " min") : "");
     }
 
+    const tekst = (str, length,ending) => {
+        
+        if (ending == null) {
+            ending = '...';
+        }
+        if (str.length > length) {
+            return str.substring(0, length - ending.length) + ending;
+        } 
+        else {
+            return str
+        }
+  };
+
+    const sjekkIndeks = (i,clicked) => {
+        reviews[i].clicked = !clicked
+    }
+
+
+
 </script>
 
 <frame >
@@ -134,7 +157,7 @@
                     
                     <label on:tap={() => showReviews = false} text="About" style="margin-right:25; " class="{!showReviews ? "border-bottom " : ""}font-weight-bold white font-size-17 margin-top-15"/>
                     
-                    <label on:tap={() => showReviews = true} text="Reviews" class="{showReviews ? "border-bottom " : ""}font-weight-bold white font-size-17 margin-top-15"/>
+                    <label on:tap={() => showReviews = true} text="Reviews" class="{showReviews ? "border-bottom " : ""}font-weight-bold white font-size-16 margin-top-15"/>
                     
                 </flexBoxLayout>
                 {#if !showReviews}
@@ -153,12 +176,15 @@
 
                 {:else}
                     {#if reviews.length > 0}
-                        {#each reviews as review}
-                            <label text="{review.author}" style="color:yellow;" class=" font-size-16"/>
-                            <label text="{review.content}" textWrap="true" class="white font-size-16"/>
+                        {#each reviews as review,index}
+                            <stackLayout class="{reviews.length > 1 ? "border" : ""}" >
+                                <label text="{review.author}"  style="color:rgb(219, 219, 219);"class="font-weight-bold font-size-15 margin-top-10"/>
+                                <label on:tap={() => sjekkIndeks(index,review.clicked)} text="{review.clicked === false ? tekst(review.content,300) : tekst(review.content,review.content.length)  }" textWrap="true" class="white font-size-15 margin-top-4"/>
+                                <label style="color:rgb(177, 177, 177)" on:tap={() => sjekkIndeks(index,review.clicked)} textWrap="true" text="{review.clicked === false ?  "Read more" : "Read less"}" class="font-weight-bold white font-size-14 margin-bottom-10 margin-top-8" />
+                            </stackLayout>
                         {/each}
                     {:else}
-                        <label text="Sorry, no reviews" class="white"/>
+                        <label text="Sorry, no reviews" class="white margin-top-10"/>
                     {/if}
                 {/if}
                 
@@ -202,6 +228,15 @@
     .fas{
         color:white;
     }
+
+    .border{ 
+           border-bottom-width: 1;
+    border-bottom-color: rgb(216, 216, 216);
+    }
+
+    
+    
+
 
 </style>
 

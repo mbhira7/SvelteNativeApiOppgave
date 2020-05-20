@@ -1,6 +1,7 @@
 <script>
     import {onMount} from "svelte"
     import {showModal} from "svelte-native"
+    //import {fade} from "svelte-native/transitions"
     const timerModule = require("tns-core-modules/timer");
     import Movie from "../modals/Movie.svelte"
     import DisplayMovies from "./DisplayMovies.svelte"
@@ -97,7 +98,7 @@ const nextMovie = (event) => {
                 <stackLayout orientation="horizontal" >
                    
                     {#if topRatedMovies.length > 0}
-                    <flexBoxLayout  class="background-image" 
+                    <flexBoxLayout class="background-image" 
                      style="  background-image: url('{"https://image.tmdb.org/t/p/w342" + moviePoster}'); " >
                         
 

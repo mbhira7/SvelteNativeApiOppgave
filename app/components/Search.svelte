@@ -1,6 +1,7 @@
 <script>
     import {onMount} from "svelte"
     import {showModal} from "svelte-native"
+    import { Template } from 'svelte-native/components'
     import {getData,apiKey} from "../constants/constant.js"
     import {tekst,moviesByActor,showActorsList,filterChoiceValue,showFilterBox,chosenGenres,languageValue,decadeStartValue,decadeEndValue} from "../stores/stores.js"
     import DisplayMovies from "./DisplayMovies.svelte"
@@ -48,9 +49,6 @@
 
 
    const titleSearch = async () => {
-
-       console.log(searchChoiceValue)
-       
        noResultsMessage = ""
        noActorsResultsMessage = ""
        noDirectorsResultsMessage = ""
@@ -66,7 +64,6 @@
             personer = []
             return 
         }
-
 
         if(searchChoiceValue === 0) {
             await getData(`https://api.themoviedb.org/3/search/movie?query=${encodeURI(searchValue)}&api_key=${apiKey}`)
@@ -165,6 +162,8 @@
             }
         })
     }
+
+
 
 </script>
 
@@ -303,6 +302,7 @@
         color:  white;
        
     }
+
 
  
 
