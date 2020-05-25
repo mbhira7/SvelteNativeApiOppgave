@@ -61,7 +61,7 @@ const slideshow = () => {
     }
 
         movie = topRatedMovies[i]
-        moviePoster = topRatedMovies[i].poster_path
+        moviePoster = topRatedMovies[i].backdrop_path
 
         i++
     }
@@ -99,7 +99,7 @@ const nextMovie = (event) => {
                    
                     {#if topRatedMovies.length > 0}
                     <flexBoxLayout class="background-image" 
-                     style="  background-image: url('{"https://image.tmdb.org/t/p/w342" + moviePoster}'); " >
+                     style="  background-image: url('{"https://image.tmdb.org/t/p/w500" + moviePoster}'); " >
                         
 
                     <gridLayout  columns="auto,*,auto">

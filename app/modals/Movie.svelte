@@ -155,7 +155,7 @@
                 <label class="white font-size-16" col="0" textWrap="true" row="2" text="{movie.overview}"  lineHeight="7" />
                 <flexBoxLayout style="align-items:flex-start;">
                     
-                    <label on:tap={() => showReviews = false} text="About" style="margin-right:25; " class="{!showReviews ? "border-bottom " : ""}font-weight-bold white font-size-17 margin-top-15"/>
+                    <label on:tap={() => showReviews = false} text="Credits" style="margin-right:25; " class="{!showReviews ? "border-bottom " : ""}font-weight-bold white font-size-17 margin-top-15"/>
                     
                     <label on:tap={() => showReviews = true} text="Reviews" class="{showReviews ? "border-bottom " : ""}font-weight-bold white font-size-16 margin-top-15"/>
                     
@@ -180,7 +180,9 @@
                             <stackLayout class="{reviews.length > 1 ? "border" : ""}" >
                                 <label text="{review.author}"  style="color:rgb(219, 219, 219);"class="font-weight-bold font-size-15 margin-top-10"/>
                                 <label on:tap={() => sjekkIndeks(index,review.clicked)} text="{review.clicked === false ? tekst(review.content,300) : tekst(review.content,review.content.length)  }" textWrap="true" class="white font-size-15 margin-top-4"/>
-                                <label style="color:rgb(177, 177, 177)" on:tap={() => sjekkIndeks(index,review.clicked)} textWrap="true" text="{review.clicked === false ?  "Read more" : "Read less"}" class="font-weight-bold white font-size-14 margin-bottom-10 margin-top-8" />
+                                {#if review.content.length > 300 }
+                                    <label style="color:rgb(177, 177, 177)" on:tap={() => sjekkIndeks(index,review.clicked)} textWrap="true" text="{review.clicked === false ?  "Read more" : "Read less"}" class="font-weight-bold white font-size-14 margin-bottom-10 margin-top-8" />
+                                {/if}
                             </stackLayout>
                         {/each}
                     {:else}
