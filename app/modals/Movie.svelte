@@ -1,15 +1,16 @@
 <script>
     import { onMount } from 'svelte'
     import {closeModal} from "svelte-native"
-    import {getData,apiKey,createList} from "../constants/constant.js"
+    import {getData,apiKey,createList,w500PosterUrl} from "../constants/constant.js"
     import { db,uniqueKey,genresList } from '../stores/stores.js'
     import ScrollViewCastCrew from "../components/ScrollViewCastCrew"
     export let movie
     const appSettings = require("tns-core-modules/application-settings")
+    //Lager en firebase collection med den unike iden som ble generert
     let movies = $db.collection(`${$uniqueKey}`)
     let checkMovie = movies.doc(`${movie.id}`)
-    const casting = `https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${apiKey}`
-    const movieDetails = `https://api.themoviedb.org/3/movie/${movie.id}?api_key=${apiKey}`
+    const castingUrl = `https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${apiKey}`
+    const movieDetailsUrl = `https://api.themoviedb.org/3/movie/${movie.id}?api_key=${apiKey}`
     const reviewsUrl = `https://api.themoviedb.org/3/movie/${movie.id}/reviews?api_key=${apiKey}`
     let genreNames = []
     let showEmptyIcon = true
@@ -17,35 +18,40 @@
     let personer = []
     let tabell = []
     $:crew = personer.filter(person => {
-        return person.job === "Director" | person.job === "Screenplay" | person.job === "Original Music Composer" | person.job === "Producer"
+        return person.job === "Director" || person.job === "Screenplay" || person.job === "Original Music Composer" || person.job === "Producer"
     })
-    let moviesD = []
+    let movieDetails = []
     let reviews = []
     let navn
     let readMore = false
     let showReviews = false
     let message = "Read more"
+    let loaded = false
 
 
+    onMount(async () => {
+        await loadData()
+    })
 
-    onMount( async () => {
-        await getData(casting)
-            .then(res => actors = res.cast)
+    const loadData = async () => {
+        await getData(castingUrl)
+            .then(res => {
+                personer = res.crew
+                actors = res.cast
+        })
 
-        await getData(casting)
-            .then(res => personer = res.crew)
-        
-        await getData(movieDetails)
-            .then(res => moviesD = [...moviesD,res])
+        await getData(movieDetailsUrl)
+            .then(res => movieDetails = res)
         
         await getData(reviewsUrl)
             .then(res => reviews = res.results)
         
-        createList(reviews)
+        await createList(reviews)
 
-    })
+        loaded = true
+    }
 
-
+    //Sjekker om filmen finnes i databasen 
     checkMovie.onSnapshot(doc => {
         if (doc.exists) {
             showEmptyIcon = false
@@ -55,7 +61,7 @@
         }
     })
     
-
+    //Looper gjennom filmen sine sjanger ider og ser etter hvilke sjanger navn idene matcher mot
     movie.genre_ids.forEach(
         genreId => {
             const indeks = $genresList.findIndex(genre => genre.id === genreId)
@@ -63,12 +69,17 @@
         }
     )
 
+    //Legger til "|" mellom hver sjanger
     for(let i=1; i<genreNames.length; i++){
         genreNames[i] = "| " + genreNames[i];
     }
    
+    //Legger til og sletter filmer i databasen 
     const addAndDelete = () => {
-        appSettings.setString("unique-key", $uniqueKey)
+        //Lagrer den genererte iden på telefonen lokalt 
+        appSettings.setString("unique-key", $uniqueKey) 
+        
+        //Toggler mellom ikoner
         showEmptyIcon = !showEmptyIcon
 
         if(!showEmptyIcon) {
@@ -88,6 +99,7 @@
         }
     }
 
+    //Returnerer filmens spilletid i timer og minutter
     const convertToHoursMinutes =  (num) => {
         let number = num
         let hours = (number / 60)
@@ -97,8 +109,8 @@
         return (restHours > 0 ? restHours + " hr " : "") + (restMinutes > 0 ? (restMinutes + " min") : "");
     }
 
+    //Returnerer en string som ikke overstiger maks antall tegn
     const tekst = (str, length,ending) => {
-        
         if (ending == null) {
             ending = '...';
         }
@@ -108,13 +120,13 @@
         else {
             return str
         }
-  };
-
-    const sjekkIndeks = (i,clicked) => {
-        reviews[i].clicked = !clicked
     }
 
 
+    //Toggler mellom read more og read less på hver anmeldelse
+    const sjekkIndeks = (i,clicked) => {
+        reviews[i].clicked = !clicked
+    }
 
 </script>
 
@@ -127,9 +139,10 @@
                 ios.systemIcon="14" 
                 ios.position="right" />
         </actionBar>
+        {#if loaded}
         <scrollView scrollBarIndicatorVisible={false}>
             <flexBoxLayout class="m-y-60" style="flex-direction:column; margin:0 40 0 40;">
-                <image src={"https://image.tmdb.org/t/p/w500"+ movie.poster_path} class="image img-rounded " style="margin-top:18; " stretch="aspectFill"/>
+                <image src={w500PosterUrl + movie.poster_path} class="image img-rounded " style="margin-top:18; " stretch="aspectFill"/>
                 <gridLayout   row="1" columns="170,*" style="margin-top:5; margin-bottom:3;">
                     <label textAlignment="left" textWrap="true" row="1" col="0" class="font-weight-bold white font-size-18" text="{movie.title}" />
                     <gridLayout col="1"  verticalAlignment="top" horizontalAlignment="right">
@@ -144,26 +157,23 @@
                     </gridLayout>
                 </gridLayout>
                 <flexBoxLayout>
-                    {#each genreNames.slice(0,3) as genreName}
-                        <label textWrap="true" text="{genreName} " class="white font-size-16" style=" margin-bottom:3; "/>
+                    {#each genreNames.slice(0,3) as genre}
+                        <label textWrap="true" text="{genre} " class="white font-size-16" style=" margin-bottom:3; "/>
                     {/each}
                 </flexBoxLayout>
                 <label class="white font-size-16" style="margin-bottom:3;" text="{movie.release_date.slice(0, 4)}" />
-                {#each moviesD as m}
-                    <label text="{convertToHoursMinutes(m.runtime)}" class="white font-size-16" style=" margin-bottom:8;"/>
-                {/each}
+                <label text="{convertToHoursMinutes(movieDetails.runtime)}" class="white font-size-16" style=" margin-bottom:8;"/>
                 <label class="white font-size-16" col="0" textWrap="true" row="2" text="{movie.overview}"  lineHeight="7" />
                 <flexBoxLayout style="align-items:flex-start;">
                     
                     <label on:tap={() => showReviews = false} text="Credits" style="margin-right:25; " class="{!showReviews ? "border-bottom " : ""}font-weight-bold white font-size-17 margin-top-15"/>
-                    
                     <label on:tap={() => showReviews = true} text="Reviews" class="{showReviews ? "border-bottom " : ""}font-weight-bold white font-size-16 margin-top-15"/>
                     
                 </flexBoxLayout>
                 {#if !showReviews}
                     <label class="font-weight-bold white margin-bottom-10 font-size-16 margin-top-15" text="Cast" />
                     {#if actors.length > 0}
-                        <ScrollViewCastCrew array={actors.slice(0,6)} />
+                        <ScrollViewCastCrew array={actors} />
                     {:else}
                         <label text="Sorry, no cast available" class="white"/>
                     {/if}
@@ -189,10 +199,9 @@
                         <label text="Sorry, no reviews" class="white margin-top-10"/>
                     {/if}
                 {/if}
-                
-                
             </flexBoxLayout>
         </scrollView>
+        {/if}
     </page>
 </frame>
 

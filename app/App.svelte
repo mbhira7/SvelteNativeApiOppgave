@@ -10,6 +10,7 @@
     let selectedTab = 0
     let favourites = []
     
+//Sjekker om firebase kjører
 const initFirebase = () => {
     return new Promise(resolve => {
         firebase.initializeApp({
@@ -29,11 +30,13 @@ const initFirebase = () => {
 onMount( async () => {
     console.log('App mounts..')
     
+    //Setter en unik id 
     if(appSettings.getString("unique-key")){
         uniqueKey.set(appSettings.getString("unique-key"))
     }
     $db = await initFirebase()
     const movies = $db.collection(`${$uniqueKey}`)
+    //Henter ut brukeren sine favoritter fra firebase 
     const showFavourites = movies.onSnapshot(snapshot => {
         favourites=[]
         snapshot.forEach( favourite => {
@@ -48,9 +51,7 @@ onMount( async () => {
     <stackLayout >
     <tabs row="0" bind:selectedIndex={selectedTab} tabsPosition="bottom"  style="padding:0; margin:0;">
         
-        
         <tabStrip backgroundColor="rgb(30, 30, 30)" class="tabstrip-label">
-           
             <tabStripItem >
                 <image src="font://&#xf008;" class="fas" />
             </tabStripItem >
@@ -62,10 +63,6 @@ onMount( async () => {
             <tabStripItem >
                 <image src="font://&#xf02e;" class="far" />
             </tabStripItem>
-            
-
-           
-
         </tabStrip>
         
         
@@ -81,10 +78,6 @@ onMount( async () => {
             <Watchlist favourites={favourites} />
         </tabContentItem>
         
-
-        
-
-        
     </tabs>
     </stackLayout>
 </page>
@@ -92,7 +85,6 @@ onMount( async () => {
 <style>
 
    .tabstrip-label{
-      
        color:white;
        font-size:10;
        padding:0;

@@ -3,7 +3,7 @@
     import {showModal} from "svelte-native"
     import { Template } from 'svelte-native/components'
     import {getData,apiKey} from "../constants/constant.js"
-    import {tekst,moviesByActor,showActorsList,filterChoiceValue,showFilterBox,chosenGenres,languageValue,decadeStartValue,decadeEndValue} from "../stores/stores.js"
+    import {moviesByActor,showActorsList,filterChoiceValue,showFilterBox,chosenGenres,languageValue,decadeStartValue,decadeEndValue} from "../stores/stores.js"
     import DisplayMovies from "./DisplayMovies.svelte"
     import SearchResults from "./SearchResults.svelte"
     import ScrollViewCastCrew from "./ScrollViewCastCrew.svelte"
@@ -25,9 +25,19 @@
     let topRatedMovies = []
     let personer = []
     let showGrid = true
+    let placeholderText = "title"
     let i = 1
-     $:placeholderText = searchChoiceValue === 0 ? "title" : place
-     $:place = searchChoiceValue === 1 ? "actor" : "director"
+    $:{
+        if(searchChoiceValue === 0) {
+            placeholderText = "title"
+        } 
+        if(searchChoiceValue === 1){
+            placeholderText = "actor"
+        }
+        if(searchChoiceValue === 2){
+            placeholderText = "director"
+        }
+    }
     $:actors = personer.filter(person => person.known_for_department === "Acting")
     $:directors = personer.filter(person => person.known_for_department === "Directing")
    
@@ -35,10 +45,10 @@
         searchChoiceValue = 0
         await getData(topRatedMoviesUrl)
             .then(res => topRatedMovies = res.results)
-        console.log(searchChoiceValue)
     })
 
-    const test = () => {
+    //Nummererer bildene på browse sidene
+    const numberImages = () => {
         if(i > 9) {
             i = 1
         }
@@ -47,13 +57,12 @@
     }
     
 
-
    const titleSearch = async () => {
+       //Nuller ut alle verdier
        noResultsMessage = ""
        noActorsResultsMessage = ""
        noDirectorsResultsMessage = ""
        $showActorsList = true
-       $tekst = ""
 
        if(searchValue.length === 0) { 
             searchResults = []
@@ -65,12 +74,13 @@
             return 
         }
 
+        //Fetcher ut filmer som passer med tittelsøk 
         if(searchChoiceValue === 0) {
             await getData(`https://api.themoviedb.org/3/search/movie?query=${encodeURI(searchValue)}&api_key=${apiKey}`)
             .then(res => searchResults = res.results)
         }
 
-           
+        //Fetcher ut personer som passer med skuespiller/regissør søk
         else{
             await getData(`https://api.themoviedb.org/3/search/person?query=${encodeURI(searchValue)}&api_key=${apiKey}`)
             .then(res => personer = res.results)
@@ -93,7 +103,7 @@
     }
 
    
-
+    //Toggler mellom browse page og search
     const toggle1 = () => {
         showFilterPage = false
         showGrid = !showGrid
@@ -110,8 +120,6 @@
         noActorsResultsMessage = ""
         noDirectorsResultsMessage = ""
         inputMessage = ""
-        $tekst = ""
-        console.log(searchChoiceValue)
 
     }
 
@@ -126,9 +134,9 @@
         noActorsResultsMessage = ""
         noDirectorsResultsMessage = ""
         inputMessage = ""
-        $tekst = ""
     }
 
+    //Setter inn parametrene for filtreringssøk og fetcher matchende filmer
     const filterSearch = async () => {
         inputValue = $filterChoiceValue === 1 ? $chosenGenres : $chosenGenres.join("|")
 
@@ -153,6 +161,7 @@
         }
     }
 
+    //Viser frem filmartikkel
      const viewMovie = async (movie) => {
         await showModal({
             page: Movie,
@@ -162,7 +171,6 @@
             }
         })
     }
-
 
 
 </script>
@@ -186,23 +194,19 @@
         </stackLayout>
         
         <stackLayout >
-           
             {#if topRatedMovies.length > 0 && showGrid && !showFilterPage}
-             
                 <label text="Top rated" class="h2 white text-center"/>
                 <flexBoxLayout style="justify-content:center;">
-               
                     <wrapLayout orientation="horizontal" >
                         {#each topRatedMovies.slice(0,9) as movie}
                             <flexBoxLayout style="padding:2;">
                                 <flexBoxLayout on:tap={() => viewMovie(movie)} style="background-image: url('{"https://image.tmdb.org/t/p/w342" + movie.poster_path}'); height:30%; width:30%; background-size: 100% 100%; align-items:flex-end; border-radius:4;" >
-                                <label text="{test()}"  class="h1 font my-label border" style=" padding-left:12;" />
+                                <label text="{numberImages()}"  class="h1 font my-label border" style=" padding-left:12;" />
                                 </flexBoxLayout>
                             </flexBoxLayout>
                         {/each}
                     </wrapLayout>
                 </flexBoxLayout>
-             
             {/if}
 
             {#if !showFilterPage && !showGrid}
@@ -237,7 +241,7 @@
         {/if}
         
         {#if !showFilterPage && searchChoiceValue === 1 && $showActorsList && !showGrid}
-            <ScrollViewCastCrew heading="{noActorsResultsMessage}" array={actors} useFunction={true}/>
+            <ScrollViewCastCrew heading={noActorsResultsMessage} array={actors} useFunction={true}/>
         {/if}
 
         {#if !showFilterPage && searchChoiceValue === 2 && $showActorsList && !showGrid}
@@ -252,23 +256,14 @@
 
 <style>
     page{
-         
         width:100%;
         height: 100%;
-   }
+    }
 
    .h1{
        font-family:'Ultra-Regular'
    }
 
-   .tester{
-        background-size: 100% 100%;
-         background-repeat: no-repeat;
-         padding:6;
-        border-radius:4;
-    
-   }
-    
     .fas{
         color:white;
     }
@@ -302,8 +297,5 @@
         color:  white;
        
     }
-
-
- 
 
 </style>

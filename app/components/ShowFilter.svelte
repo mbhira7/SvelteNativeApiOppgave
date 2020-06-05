@@ -68,9 +68,5 @@
     padding-top:9;
 }
 
-.marginBottom{
-    margin-bottom:20;
-}
-
 
 </style>
